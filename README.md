@@ -2,7 +2,7 @@
 
 Para crear nuevos orígenes es necesario realizar una serie de pasos previos:
 
-- Configurar Kafka y Logstash para la creación del nuevo tópico y origen.
+- [Configurar Kafka y Logstash para la creación del nuevo tópico y origen](https://github.com/mmesa/readmes_openbus/blob/master/README_logstash.md)
 - Generar la metadata con el nuevo origen en la bbdd MySql.
 - Generar la tabla Hive inicial con el nuevo origen.
 - Crear y desplegar la nueva topología para el nuevo origen.

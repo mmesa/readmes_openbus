@@ -12,10 +12,10 @@ COLLECTION ITEMS TERMINATED BY ','
 LOCATION '[directorio_hdfs]';
 ````
 
-Donde:
+Donde:<sdsdsd>
 
 - **nombre_del_topico_kafka**: Nombre del tópico kafka creado para el nuevo origen.
 - **campo**: Nombre del campo del origen.
-- **tipo**: Tipo del campo del origen, puede ser String, int, ARRAY <Double> o timestamp.
+- **tipo**: Tipo del campo del origen, puede ser String, int, ARRAY<'Double'>(Sin comillas) o timestamp.
 - **directorio_hdfs**: Directorio hdfs donde se almacenará la información relativa al nuevo origen.
 

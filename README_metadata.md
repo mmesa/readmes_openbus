@@ -9,9 +9,9 @@ insert into origen_estructurado (is_kafka_online, kafka_topic, topology_name, ve
 ```
 Donde:
 
-**online**: true o false si será un origen para tratar métricas online o batch.
-**nombre_del_topico**: Nombre del tópico kafka que se corresponderá con el creado anteriormente en este framework.
-**nombre_de_la_topología**: Nombre que tendrá la topología del origen a crear.
+- **online**: true o false si será un origen para tratar métricas online o batch.
+- **nombre_del_topico**: Nombre del tópico kafka que se corresponderá con el creado anteriormente en este framework.
+- **nombre_de_la_topología**: Nombre que tendrá la topología del origen a crear.
 
 
 Tantos registros en la tabla campos_origen como campos tenga el nuevo origen.
@@ -21,9 +21,9 @@ insert into campos_origen (nombre_campo, tipo_campo, origen_estructurado, orden_
 
 Donde:
 
-**nombre_campo**: El nombre del campo del nuevo origen.
-**tipo_dato**: El tipo de dato del campo del nuevo origen, puede ser string, decimal, array<double>, int o timestamp.
-**foreign_key_creada_en_origen_estructurado**: Será el índice de la tabla de origen_estructurado del elemento creado anteriormente.
+- **nombre_campo**: El nombre del campo del nuevo origen.
+- **tipo_dato**: El tipo de dato del campo del nuevo origen, puede ser string, decimal, array<double>, int o timestamp.
+- **foreign_key_creada_en_origen_estructurado**: Será el índice de la tabla de origen_estructurado del elemento creado anteriormente.
 
 
         

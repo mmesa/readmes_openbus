@@ -16,7 +16,7 @@ Donde:
 
 Tantos registros en la tabla campos_origen como campos tenga el nuevo origen.
 ```
-insert into campos_origen (nombre_campo, tipo_campo, origen_estructurado, orden_en_tabla) values (['nombre_campo'], ['tipo_dato'], [foreign_key_creada_en_origen_estructurado], 1);
+insert into campos_origen (nombre_campo, tipo_campo, origen_estructurado, orden_en_tabla) values (['nombre_campo'], ['tipo_dato'], [foreign_key_creada_en_origen_estructurado], [orden]);
 ```
 
 Donde:
@@ -24,6 +24,6 @@ Donde:
 - **nombre_campo**: El nombre del campo del nuevo origen.
 - **tipo_dato**: El tipo de dato del campo del nuevo origen, puede ser string, decimal, array<double>, int o timestamp.
 - **foreign_key_creada_en_origen_estructurado**: Será el índice de la tabla de origen_estructurado del elemento creado anteriormente.
-
+- **orden**: Orden del campo a procesar.
 
         

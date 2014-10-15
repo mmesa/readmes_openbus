@@ -31,5 +31,5 @@ Desde la máquina donde esté instalado Logstash:
 - Parar primero y arrancar después parar el servidor de Logstash con la configuración creada anteriormente:
 `nohup /root/software/logstash-1.4.1/bin/logstash -f kafka.conf --log ./logs_logstash.log -w 1 -v &`
 
-- [Configuración previa de Logstash](https://github.com/mmesa/readmes_openbus/blob/master/README_logstash_conf.md)
+[Configuración previa de Logstash](https://github.com/mmesa/readmes_openbus/blob/master/README_logstash_conf.md)
 

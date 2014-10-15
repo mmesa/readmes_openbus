@@ -13,7 +13,8 @@ Desde la máquina donde esté instalado Kafka:
 
 Desde la máquina donde esté instalado Logstash:
 - Configurar Logstash para recibir la información del nuevo origen al tópico de kafka creado anteriormente:
-Editar el archivo /root/software/logstash-1.4.1/conf/kafka.conf. Añadir en la etiqueta output la condición de filtrado del nuevo origen:
+	- Editar el archivo /root/software/logstash-1.4.1/conf/kafka.conf. 
+	- Añadir en la etiqueta output la condición de filtrado del nuevo origen:
 ```
 else if [program] == "cabecera_propia_del_nuevo_origen"{
 	kafka{

@@ -1,5 +1,4 @@
 #Openbus
-===============
 
 Para crear nuevos orígenes es necesario realizar una serie de pasos previos:
 

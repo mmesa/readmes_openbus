@@ -45,7 +45,7 @@ Después será necesario crear 2 clases Java para definir la topología:
 - Una clase parseador: Clase que utiliza las funciones de Trident que permite procesar cada registro del tópico Kafka y dividirlo en campos.
 - Una clase topology: Clase que submitirá cada topología al cluster de Storm.
 
-Una vez creadas estas clases junto a las que están en el proyecto #TopologyParser (https://github.com/mmesa/readmes_openbus/edit/master/README_topologia.md) se construirá un archivo .jar
+Una vez creadas estas clases junto a las que están en el proyecto #TopologyParser (https://github.com/Produban/openbus/tree/TopologyParsers/topologies) se construirá un archivo .jar
 
 Para ejecutar la topología es necesario desplegar el archivo .jar generado en el entorno de Storm de esta manera:
 

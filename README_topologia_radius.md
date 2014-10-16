@@ -311,7 +311,7 @@ public class OpenbusRadiusEntityTopology {
 		BrokerSpout openbusBrokerSpout = new BrokerSpout(propiedades.getProperty("KAFKA_TOPIC"), //tópico KAFKA
 				propiedades.getProperty("KAFKA_ZOOKEEPER_LIST"), //zookeeper
 				propiedades.getProperty("KAFAKA_BROKER_ID"), //Client ID - Configuración del broker 
-	            Boolean.getBoolean(propiedades.getProperty("KAFKA_FROM_BEGINNING"))); //si es desde el principio
+	            Boolean.parseBoolean(propiedades.getProperty("KAFKA_FROM_BEGINNING"))); //si es desde el principio
 	
 		//Campos que detectaremos desde el parseador.
 		Fields hdfsFields = new Fields( "ID","Message_Text","TIMESTAMP_MILLIS","ACS_Timestamp","ACSView_Timestamp",

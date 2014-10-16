@@ -10,6 +10,6 @@ Para crear nuevos orígenes es necesario realizar una serie de pasos previos:
 #Referencias
 
 - [Logstash para Openbus] (https://github.com/mmesa/readmes_openbus/blob/master/README_logstash_conf.md)
-- [Scripts de metadata generados] (#)
-- [Tablas Hive iniciales] (#)
-- [Parseador de topologías] (#)
+- [Scripts de metadata generados] (https://github.com/mmesa/readmes_openbus/blob/master/README_metadata_conf.md)
+- [Tablas Hive iniciales] (https://github.com/mmesa/readmes_openbus/blob/master/README_hive_conf.md)
+- [Parseador de topologías] (https://github.com/mmesa/readmes_openbus/blob/master/README_topologias_conf.md)

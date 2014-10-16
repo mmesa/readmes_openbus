@@ -1,6 +1,6 @@
 #Bluecoat
 
--**proxyLocation.properties**
+**proxyLocation.properties**
 ```
 #Configuración acceso HDFS
 HDFS_URL=hdfs://180.133.240.175:8020
@@ -40,7 +40,7 @@ TIME_ROTATION_VALUE=1
 SYNC_MILLIS_PERIOD=10000
 ```
 
--**ProxyLocationParser.java**
+**ProxyLocationParser.java**
 ```
 package com.produban.openbus.topologies;
 
@@ -119,7 +119,7 @@ public class ProxyLocationParser extends BaseFunction {
 
 ```
 
--**OpenbusProxyLocationTopology.java**
+**OpenbusProxyLocationTopology.java**
 ```
 package com.produban.openbus.topologies;
 

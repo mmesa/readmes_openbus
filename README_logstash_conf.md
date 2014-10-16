@@ -1,4 +1,4 @@
-#LOGSTASH - CONFIGURACION ACTUAL
+#Logstash - configuración actual
 
 
 

@@ -1,4 +1,4 @@
-# Configuración previa de Hive para los orígenes ya creados
+# Configuración de Hive para los orígenes ya creados
 
 -- Tabla Hive para postfix
 ```

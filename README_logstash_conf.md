@@ -1,7 +1,43 @@
 #Logstash - configuración actual
 
 
+Frameworks:
 
+- logstash-1.4.1 : Distribución de logstash
+- kafka_2.9.2-0.8.1.1 : Distribución de apache kafka
+- logstash-kafka-0.5.0 : Plugin de kafka para Logstash
+- jruby-1.7.12 : Distribución de JRuby
+- jdk1.7.0_51 : Distribución de Java
+
+Instalación:
+
+- Instalar las versiones de Java y JRuby
+- Extraer los frameworks cada uno en un directorio, por ejemplo:
+ 
+/opt/logstash-1.4.1
+/opt/kafka_2.9.2-0.8.1.1
+/opt/logstash-kafka-0.5.0
+
+- Copiar todos los archivos .jar de /opt/kafka_2.9.2-0.8.1.1/libs a /opt/logstash-1.4.1/vendor/jar/kafka_2.9.2-0.8.1.1/libs
+````
+mkdir /opt/logstash-1.4.1/vendor/jar/kafka_2.9.2-0.8.1.1
+mkdir /opt/logstash-1.4.1/vendor/jar/kafka_2.9.2-0.8.1.1/libs
+cp /opt/kafka_2.9.2-0.8.1.1/libs/*.jar /opt/logstash-1.4.1/vendor/jar/kafka_2.9.2-0.8.1.1/libs
+````
+- Copiar todos los archivos .jar de /opt/logstash-kafka-0.5.0/lib a /opt/logstash-1.4.1/lib
+```
+cp -R /opt/logstash-kafka-0.5.0/lib  /opt/logstash-1.4.1/lib
+```
+
+- Desde /opt/logstash-1.4.1 lanzar un script ruby para instalar la librería jruby-kafka en logstash
+```
+cd /opt/logstash-1.4.1
+GEM_HOME=vendor/bundle/jruby/1.9 GEM_PATH= java -jar vendor/jar/jruby-complete-1.7.11.jar --1.9 ../logstash-kafka-0.5.0/gembag.rb ../logstash-kafka-0.5.0/logstash-kafka.gemspec
+```
+
+Logstash:
+
+- Crear el archivo kafka.conf (por ejemplo) con la configuración necesaria para indicar como parámetros de entrada syslog y de salida apache kafka a un tópico determinado.
 
 ```
 # Configuración de entrada, en este caso se recibe la información por syslog
@@ -78,3 +114,10 @@ output {
 }
 
 ```
+
+- Arrancar el servidor de Logstash con la configuración creada anteriormente:
+``` 
+ /opt/logstash-1.4.1/bin/logstash -f kafka.conf
+```
+
+

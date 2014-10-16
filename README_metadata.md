@@ -27,3 +27,4 @@ Donde:
 - **orden**: Orden del campo a procesar.
 
         
+[Configuración previa de la metadata](https://github.com/mmesa/readmes_openbus/blob/master/README_metadata_conf.md)

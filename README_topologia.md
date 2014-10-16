@@ -40,17 +40,18 @@ Es necesario crear un archivo .properties por cada nuevo origen con las siguient
 - **ELASTICSEARCH_CACHE_SEARCH**=Permite cachear las búsquedas en elasticsearch, los valores posibles son true o false
 
 
-For each type of entry 2 classes will be created:
+Después será necesario crear 2 clases Java para definir la topología:
 
-- Origin parser class: Trident BaseFunction which will allow us to process each register from the kafka topic and split it into fields. In this project `ProxyParser`, `PostfixParser` and `IronportParser`.
-- Topology submiter: This class will submit each topology to the Storm cluster. In this project `OpenbusProxyTopology`, `OpenbusPostfixTopology` and `OpenbusIronportTopology`.
+- Una clase parseador: Clase que utiliza las funciones de Trident que permite procesar cada registro del tópico Kafka y dividirlo en campos.
+- Una clase topology: Clase que submitirá cada topología al cluster de Storm.
 
+Una vez creadas estas clases junto a las que están en el proyecto #TopologyParser (https://github.com/mmesa/readmes_openbus/edit/master/README_topologia.md) se construirá un archivo .jar
 
-For running one of the topologies it is only needed to upload the JAR into Storm as follows:
+Para ejecutar la topología es necesario desplegar el archivo .jar generado en el entorno de Storm de esta manera:
 
-``./bin/storm jar <JAR FILE> <Main Topology class> <properties file>`
+`./bin/storm jar <JAR FILE> <Main Topology class> <properties file>`
 
-For example:
+Por ejemplo
 
-`./bin/storm jar topologies-0.0.1-SNAPSHOT.jar com.produban.openbus.topologies.OpenbusProxyTopology proxy.properties`
+`./bin/storm jar topologies-0.0.1-SNAPSHOT.jar com.produban.openbus.topologies.OpenbusPostfixLocationTopology postfixLocation.properties`
 

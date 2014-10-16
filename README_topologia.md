@@ -56,4 +56,4 @@ Por ejemplo
 `./bin/storm jar topologies-0.0.1-SNAPSHOT.jar com.produban.openbus.topologies.OpenbusPostfixLocationTopology postfixLocation.properties`
 
 
-[Configuración de la topología de los otros orígenes] (https://github.com/Produban/openbus/tree/TopologyParsers/topologies)
+[Configuración de la topología de los otros orígenes] (https://github.com/mmesa/readmes_openbus/edit/master/README_topologia_conf.md)

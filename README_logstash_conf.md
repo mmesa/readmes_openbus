@@ -4,6 +4,7 @@
 
 
 ```
+# Configuración de entrada, en este caso se recibe la información por syslog
 input {
   syslog{
     type => syslog
@@ -11,6 +12,7 @@ input {
   }
 }
 
+# Filtros, se recoge una parte del mensaje en la variable mensaje para su posterior uso
 filter {
   grok {
     match => { "message" => "((\S+)\|\|)?(?<content>(.*))"}
@@ -20,6 +22,7 @@ filter {
   }
 }
 
+# Configuración de salida, se redirecciona a un tópico kafka dependiendo de la variable program
 output {
         if [program] == "Multientidad.NetIX.LogicalEntity.ColaborativeServer.production.postfix.postfix"{
                 kafka{

@@ -19,3 +19,4 @@ Donde:<sdsdsd>
 - **tipo**: Tipo del campo del origen, puede ser String, int, ARRAY<'Double'>(Sin comillas) o timestamp.
 - **directorio_hdfs**: Directorio hdfs donde se almacenará la información relativa al nuevo origen.
 
+[Configuración previa de Hive](https://github.com/mmesa/readmes_openbus/blob/master/README_hive_conf.md)

@@ -22,7 +22,7 @@ OpenbusRadiusEntityTopology.java para la creación de las nuevas para el nuevo o
 **HDFS_OUTPUT_FILENAME**=Prefijo del nombre del fichero de salida  
 **HDFS_OUTPUT_FILE_EXTENSION**=Extensión del fichero de salida  
 **INPUT_ORIGIN**=Se usa para especificar de dónde serán leídos los datos, las opciones posible son kafka y disco  
---Configuración de KAFKA 
+--Configuración de KAFKA   
 **KAFKA_ZOOKEEPER_LIST**=Lista de url:puerto donde esta corriendo el Zookeeper  
 **KAFAKA_BROKER_ID**=Id del broker Kafka  
 **KAFKA_TOPIC**=Nombre del tópico Kafka del origen  
@@ -39,7 +39,7 @@ OpenbusRadiusEntityTopology.java para la creación de las nuevas para el nuevo o
 **TIME_ROTATION_UNIT**=Unidad de tiempo, los valores posibles son SECOND/MINUTE/HOUR/DAY  
 **TIME_ROTATION_VALUE**=Valor de tiempo  
 --Propiedades de la sincronización/escritura a HDFS  
-**SYNC_MILLIS_PERIOD**=Periodo en milisegundos en el que los datos parseados serán escritos en disco 
+**SYNC_MILLIS_PERIOD**=Periodo en milisegundos en el que los datos parseados serán escritos en disco   
 --Configuración ElasticSearch  
 **ELASTICSEARCH_HOST**=Url donde está instalado Elasticsearch  
 **ELASTICSEARCH_PORT**=Puerto donde está instalado Elasticsearch  

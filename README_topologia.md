@@ -1,6 +1,19 @@
 # Topologías
 
-Es necesario crear un archivo .properties por cada nuevo origen con las siguientes propiedades:
+Los pasos son los siguientes:
+
+* Descargar el proyecto de topologías que contiene todo el paquete necesario para poder lanzar topologías a storm.
+  Pinchar en este [enlace](https://github.com/Produban/openbus/tree/topologias) para ir al repositorio donde se encuentra el proyecto, una vez ahí existe un botón a la derecha para poder descargar el mismo.
+
+* Una vez descargado el proyecto descomprimirlo en una carpeta y dentro de la ruta topologias/src/main/java/com/produban/openbus/topologies es donde hay que crear las dos clases del parseo y de definicion de
+la topología para el nuevo origen. La clase parseador es la que utiliza las funciones de Trident que permite procesar cada registro del tópico Kafka y dividirlo en campos. La clase de definición de topologías es la que submitirá cada topología al cluster de Storm. Se podría tomar como ejemplo las clases del origen Radius: RadiusEntityParser.java y
+OpenbusRadiusEntityTopology.java para la creación de las nuevas para el nuevo origen.
+
+* Cuando las clases esté implementadas y compiladas hay que generar el archivo .jar con todo el paquete de clases de topología y parseo. Una forma de hacerlo sencillo es con apache maven.
+
+
+
+* Es necesario crear un archivo .properties por cada nuevo origen con las siguientes propiedades:
 
 --Configuración acceso HDFS
 
@@ -40,20 +53,13 @@ Es necesario crear un archivo .properties por cada nuevo origen con las siguient
 - **ELASTICSEARCH_CACHE_SEARCH**=Permite cachear las búsquedas en elasticsearch, los valores posibles son true o false
 
 
-Después será necesario crear 2 clases Java para definir la topología:
+* Para ejecutar la topología es necesario desplegar el archivo .jar generado en el entorno de Storm en el directorio de instalación del servidor donde se encuentre storm de esta manera:
 
-- Una clase parseador: Clase que utiliza las funciones de Trident que permite procesar cada registro del tópico Kafka y dividirlo en campos.
-- Una clase topology: Clase que submitirá cada topología al cluster de Storm.
-
-Una vez creadas estas clases junto a las que están en el proyecto [TopologyParser] (https://github.com/Produban/openbus/tree/TopologyParsers/topologies) se construirá un archivo .jar
-
-Para ejecutar la topología es necesario desplegar el archivo .jar generado en el entorno de Storm de esta manera:
-
-`./bin/storm jar <JAR FILE> <Main Topology class> <properties file>`
+`./bin/storm jar <JAR_FILE> <Main_Topology_class> <properties_file>`. Donde <JAR_FILE> es el archivo .jar generado anteriormente con todas las clases de topología y parseo. <Main_Topology_class> es la clase de definición de topología que se quiere desplegar. Y <properties_file> el archivo .properties creado con las propiedades para el nuevo origen.
 
 Por ejemplo
 
-`./bin/storm jar topologies-0.0.1-SNAPSHOT.jar com.produban.openbus.topologies.OpenbusPostfixLocationTopology postfixLocation.properties`
+`./bin/storm jar topologies-0.0.1-SNAPSHOT.jar com.produban.openbus.topologies.OpenbusRadiusEntityTopology radius.properties`
 
 
 [Configuración de la topología de los otros orígenes]

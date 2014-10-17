@@ -43,7 +43,7 @@ OpenbusRadiusEntityTopology.java para la creación de las nuevas para el nuevo o
 --Configuración ElasticSearch  
 **ELASTICSEARCH_HOST**=Url donde está instalado Elasticsearch  
 **ELASTICSEARCH_PORT**=Puerto donde está instalado Elasticsearch  
-**ELASTICSEARCH_NAME**=Nombre de elasticsearch 
+**ELASTICSEARCH_NAME**=Nombre de elasticsearch   
 **ELASTICSEARCH_CACHE_SEARCH**=Permite cachear las búsquedas en elasticsearch, los valores posibles son true o false  
 
 

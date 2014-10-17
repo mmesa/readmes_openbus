@@ -16,7 +16,6 @@ OpenbusRadiusEntityTopology.java para la creación de las nuevas para el nuevo o
 * Es necesario crear un archivo .properties por cada nuevo origen con las siguientes propiedades:
 
 --Configuración acceso HDFS
-
 **HDFS_URL**=Url y puerto donde está el HDFS  
 **HDFS_USER**=Usuario para escribir en HDFS  
 **HDFS_OUTPUT_DIR**=Directorio donde se escribirá los datos parseados  

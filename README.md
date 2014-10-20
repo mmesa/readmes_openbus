@@ -6,7 +6,7 @@ Para crear nuevos orígenes es necesario realizar una serie de pasos previos:
 - [Generar la metadata con el nuevo origen en la bbdd MySql](https://github.com/mmesa/readmes_openbus/blob/master/README_metadata.md)
 - [Generar la tabla Hive inicial con el nuevo origen](https://github.com/mmesa/readmes_openbus/blob/master/README_hive.md)
 - [Crear y desplegar la nueva topología para el nuevo origen](https://github.com/mmesa/readmes_openbus/blob/master/README_topologia.md)
-- [Compilar y desplegar la consola web](https://github.com/mmesa/readmes_openbus/blob/master/README_consola.md)
+
 
 
 #Referencias
@@ -15,3 +15,4 @@ Para crear nuevos orígenes es necesario realizar una serie de pasos previos:
 - [Scripts de metadata generados] (https://github.com/mmesa/readmes_openbus/blob/master/README_metadata_conf.md)
 - [Tablas Hive iniciales] (https://github.com/mmesa/readmes_openbus/blob/master/README_hive_conf.md)
 - [Parseador de topologías] (https://github.com/mmesa/readmes_openbus/blob/master/README_topologia_conf.md)
+- [Compilar y desplegar la consola web](https://github.com/mmesa/readmes_openbus/blob/master/README_consola.md)

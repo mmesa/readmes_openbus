@@ -12,10 +12,4 @@ realizar una serie de pasos previos para poder instalar el archivo de forma sati
 * Borrar cualquier referencia a la aplicación web antigua con `rm -RF /root/software/apache_tomcat_xxx/webapps/web_console*`
 * Copiar el nuevo archivo .war generado al directorio destino `cp [dir_origen] /root/software/apache_tomcat_xxx/webapps`
 * Arrancar el servidor Tomcat `./root/software/apache_tomcat_xxx/bin/startup.sh`
-
-
-
-Para crear nuevas métricas desde consola web se accede a través de : http://192.168.x.x:8080/web_console/  
-Usuario: admin     
-Password: admin    
-Se podrán crear métricas batch u online. Para las batch
+* La consola estará en http://192.168.xx:8080/web_console y se podrá hacer login con usuario admin y password admin.

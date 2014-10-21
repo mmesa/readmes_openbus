@@ -98,3 +98,20 @@ YEAR(eventTimeStamp) as ANO`
 - **Query Hive:** `insert into table top_receptores SELECT CONCAT(ANO,MES,"-",USERTO) as ID,USERTO,count(1) as CUENTA,sum(TAMANO_enviados) as TAMANO,MAX(ULTIMO) as ULTIMO,MES,ANO FROM(SELECT MSGID,USERTO,MAX(eventTimeStamp) as ULTIMO,
 MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO FROM ob_src_postfix WHERE DSN in("2.0.0","2.6.0","2.4.0") and AMAVISID ='null' GROUP BY MSGID,USERTO, MONTH(eventTimeStamp) ,YEAR(eventTimeStamp)) DES JOIN(SELECT MSGID,sum(SIZE) as TAMANO_enviados
 FROM ob_src_postfix WHERE SIZE is not NULL GROUP BY MSGID) REM ON REM.MSGID=DES.MSGID GROUP BY USERTO, MES,ANHO;`
+
+***
+
+####2. Métrica *errores_smtp* : Correos con error por mes
+
+- **Origen de datos:** `ob_src_postfix`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,DSN STRING,cuenta BIGINT,tamano BIGINT,porcentaje BIGINT,MES BIGINT, ANO BIGINT`
+- **Query Select:** `SELECT CONCAT(ERR.ANO,ERR.MES,"-",ERR.DSN) as ID,ERR.DSN,sum(correos) as correos,(sum(correos)*100)/total  as porcentaje,sum(TAMANO) as TAMANO,ERR.MES,ERR.ANO FROM(SELECT MSGID,DSN,count(1) as correos,MONTH(eventTimeStamp) as MES,
+YEAR(eventTimeStamp) as ANO`
+- **Query From:** `FROM ob_src_postfix`
+- **Query Where:** `WHERE DSN not in ("2.0.0","2.6.0","2.4.0","null")GROUP BY MSGID,DSN, MONTH(eventTimeStamp),YEAR(eventTimeStamp)) ERR JOIN(SELECT MSGID,sum(SIZE) as TAMANO FROM ob_src_postfix WHERE SIZE is not NULL GROUP BY MSGID)TAM ON TAM.MSGID=ERR.MSGID JOIN(SELECT count(1) as total,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp)as ANO FROM ob_src_postfix WHERE DSN not in ("2.0.0","2.6.0","2.4.0","null") GROUP BY MONTH(eventTimeStamp) ,YEAR(eventTimeStamp))TOT ON TOT.ANO=ERR.ANO AND TOT.MES=ERR.MES GROUP BY ERR.DSN,ERR.MES,ERR.ANO,TOTALes`
+- **Timestamp:**
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE errores_SMTP SELECT CONCAT(ERR.ANO,ERR.MES,"-",ERR.DSN) as ID,ERR.DSN,sum(correos) as correos,(sum(correos)*100)/total as porcentaje,sum(TAMANO) as TAMANO,ERR.MES,ERR.ANO FROM(SELECT MSGID,DSN,count(1) as correos,
+MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO FROM ob_src_postfix WHERE DSN not in ("2.0.0","2.6.0","2.4.0","null")GROUP BY MSGID,DSN, MONTH(eventTimeStamp), YEAR(eventTimeStamp)) ERR JOIN(SELECT MSGID,sum(SIZE) as TAMANO FROM ob_src_postfix WHERE SIZE is not NULL GROUP BY MSGID)TAM ON TAM.MSGID=ERR.MSGID JOIN(SELECT count(1) as total,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO FROM ob_src_postfix WHERE DSN not in("2.0.0","2.6.0","2.4.0","null")GROUP BY MONTH(eventTimeStamp) ,YEAR(eventTimeStamp))TOT ON TOT.ANO=ERR.ANO AND TOT.MES=ERR.MES GROUP BY ERR.DSN,ERR.MES,ERR.ANO,TOTAL;`
+

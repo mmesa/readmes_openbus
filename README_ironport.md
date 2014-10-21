@@ -57,3 +57,64 @@ GROUP BY eventTimeStamp,MID,REL.ICID,INTERFACEIP;
 `
 
 ***
+
+####2. Métrica *filtro_reputacion* : Correos rechazados por Filtro de Reputación
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+REPUTATION STRING,
+INTERFACEIP STRING`
+- **Query Select:** `SELECT
+DATOS.ICID as ID,
+eventTimeStamp,
+DATOS.ICID,
+REPUTATION,
+INTERFACEIP
+FROM 
+(
+SELECT 
+REPUTATION,
+eventTimeStamp,
+ICID`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `WHERE REPUTATION like "%TCPREFUSE%" OR REPUTATION like "%REJECTED%") DATOS
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=DATOS.ICID`
+
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE filtro_reputacion
+SELECT
+DATOS.ICID as ID,
+eventTimeStamp,
+DATOS.ICID,
+REPUTATION,
+INTERFACEIP
+FROM 
+(
+SELECT 
+REPUTATION,
+eventTimeStamp,
+ICID
+FROM ob_src_ironport
+WHERE REPUTATION like "%TCPREFUSE%" OR REPUTATION like "%REJECTED%") DATOS
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=DATOS.ICID`
+***

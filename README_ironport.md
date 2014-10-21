@@ -53,8 +53,7 @@ from ob_src_ironport
 WHERE ICID is not NULL and INTERFACEIP <>"null"
 )ENTR
 ON ENTR.ICID=REL.ICID
-GROUP BY eventTimeStamp,MID,REL.ICID,INTERFACEIP;
-`
+GROUP BY eventTimeStamp,MID,REL.ICID,INTERFACEIP;`
 
 ***
 
@@ -117,5 +116,87 @@ from ob_src_ironport
 WHERE ICID is not NULL and INTERFACEIP <>"null"
 ) INTERF
 ON INTERF.ICID=DATOS.ICID`
+
+***
+
+####3. Métrica *receptor_no_valido* : Correos descartados por Receptor no válido
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+DSNBOUNCE STRING,
+BOUNCEDESC STRING,
+INTERFACEIP STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+DSNBOUNCE,
+BOUNCEDESC,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+DSNBOUNCE,
+BOUNCEDESC`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where BOUNCEDESC like "%nvalid recipient%" AND DSNBOUNCE ="5.1.0") BOUNCE
+ LEFT JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=BOUNCE.MID
+LEFT JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE receptor_no_valido
+SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+DSNBOUNCE,
+BOUNCEDESC,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+DSNBOUNCE,
+BOUNCEDESC 
+from ob_Src_ironport where BOUNCEDESC like "%nvalid recipient%" AND DSNBOUNCE ="5.1.0") BOUNCE
+ LEFT JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=BOUNCE.MID
+LEFT JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID;`
 
 ***

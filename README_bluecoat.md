@@ -76,3 +76,33 @@ Count(1) as descargas,SUM(scBytes) as bytes FROM ob_src_bluecoat WHERE requestUR
 contentType in ("application/x-msdos-program","application/x-javascript","application/javascript")GROUP BY eventTimeStamp,requestPath,userCode,requestDomain;`
 
 ***
+
+####6. Métrica *descarga_comprimidos_usuario* : Descarga de archivos comprimidos por usuario
+
+- **Origen de datos:** `ob_src_bluecoat`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,usuario_descarga STRING,userCode STRING,dominio STRING,recurso STRING,eventTimeStamp timestamp,
+descargas BIGINT,bytes BIGINT`
+- **Query Select:** `SELECT CONCAT(eventTimeStamp,"-",requestPath,"-",userCode) as ID,CONCAT(requestPath,"-",userCode) as usuario_descarga,userCode,requestDomain as dominio,requestPath as recurso,eventTimeStamp,Count(1) as descargas,SUM(scBytes) as bytes`
+- **Query From:** `FROM ob_src_bluecoat`
+- **Query Where:** `WHERE requestURIExtension in ("rar", "zip", "jar", "tar", "gz", "Z", "tgz", "gzip", "ace") and eventtimestamp>"2014-07-25 11:00:00" GROUP BY eventTimeStamp,requestPath,userCode,requestDomain`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE descarga_comprimidos_usuario SELECT CONCAT(eventTimeStamp,"-",requestPath,"-",userCode) as ID,CONCAT(requestPath,"-",userCode) as usuario_descarga,userCode,requestDomain as dominio,requestPath as recurso,eventTimeStamp,Count(1) as descargas,SUM(scBytes) as bytes FROM ob_src_bluecoat WHERE requestURIExtension in ("rar", "zip", "jar", "tar", "gz", "Z", "tgz", "gzip", "ace")GROUP BY eventTimeStamp,requestPath,userCode,requestDomain;`
+
+***
+
+####7. Métrica *descarga_video_usuario* : Descargas de archivos de vídeo
+
+- **Origen de datos:** `ob_src_bluecoat`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,usuario_descarga STRING,userCode STRING,dominio STRING,recurso STRING,eventTimeStamp timestamp,
+descargas BIGINT,bytes BIGINT`
+- **Query Select:** `SELECT CONCAT(eventTimeStamp,"-",requestPath,"-",userCode) as ID,CONCAT(requestPath,"-",userCode) as usuario_descarga,userCode,requestDomain as dominio,requestPath as recurso,eventTimeStamp,Count(1) as descargas,SUM(scBytes) as bytes`
+- **Query From:** `FROM ob_src_bluecoat`
+- **Query Where:** `WHERE requestURIExtension in ("flv", "mpeg", "avi", "f4m", "bootstrap", "mp4")  OR contentType in ("video/mp4","video/f4f","video/x-flv","video/f4m","video/abst","video/webm","video/x-ms-asf") and eventtimestamp>"2014-07-25 11:00:00" GROUP BY eventTimeStamp,requestPath,userCode,requestDomain`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE descarga_video_usuario SELECT CONCAT(eventTimeStamp,"-",requestPath,"-",userCode) as ID,
+CONCAT(requestPath,"-",userCode) as usuario_descarga,userCode,requestDomain as dominio,requestPath as recurso,eventTimeStamp,
+Count(1) as descargas,SUM(scBytes) as bytes FROM ob_src_bluecoat WHERE requestURIExtension in ("flv", "mpeg", "avi", "f4m", "bootstrap", "mp4")  OR contentType in("video/mp4","video/f4f","video/x-flv","video/f4m","video/abst","video/webm","video/x-ms-asf") GROUP BY eventTimeStamp,requestPath,userCode,requestDomain;`

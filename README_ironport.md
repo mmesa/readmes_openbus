@@ -200,3 +200,389 @@ WHERE ICID is not NULL and INTERFACEIP <>"null"
 ON INTERF.ICID=REL.ICID;`
 
 ***
+
+####4. Métrica *spam* : Correos detectados como Spam
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+SPAMCASE STRING,
+INTERFACEIP STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+SPAMCASE,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,"POSITIVE" as SPAMCASE`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where SPAMCASE <> "null") SPAM
+JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=SPAM.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE spam
+SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+SPAMCASE,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,"POSITIVE" as SPAMCASE
+from ob_Src_ironport where SPAMCASE <> "null") SPAM
+JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=SPAM.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID;`
+
+***
+
+####5. Métrica *virus* : Correos detectados con virus
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+ANTIVIRUS STRING,
+INTERFACEIP STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+ANTIVIRUS,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+ANTIVIRUS`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where ANTIVIRUS<>"null" ) VIRUS
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=VIRUS.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE virus
+SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+ANTIVIRUS,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+ANTIVIRUS
+from ob_Src_ironport where ANTIVIRUS<>"null" ) VIRUS
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=VIRUS.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID;`
+
+***
+
+####6. Métrica *content_filter* : Correos bloqueados por filtro de contenido
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+FILTROCONTENIDO STRING,
+INTERFACEIP STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+FILTROCONTENIDO,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+FILTROCONTENIDO`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where FILTROCONTENIDO<>"null" ) FILTR
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=FILTR.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE content_filter
+SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+FILTROCONTENIDO,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+FILTROCONTENIDO
+from ob_Src_ironport where FILTROCONTENIDO<>"null" ) FILTR
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=FILTR.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID;`
+
+***
+
+####7. Métrica *marketing* : Correos de marketing
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+MARKETINGCASE STRING,
+INTERFACEIP STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+MARKETINGCASE,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+MARKETINGCASE`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where MARKETINGCASE <>"null" ) MARKET
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=MARKET.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE marketing
+SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+MARKETINGCASE,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+MARKETINGCASE
+from ob_Src_ironport where MARKETINGCASE <>"null" ) MARKET
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=MARKET.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID;`
+
+***
+
+####8. Métrica *correos_limpios* : Correos limpios
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+RID BIGINT,
+RESPONSE STRING,
+INTERFACEIP STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+RID,
+RESPONSE,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,RID,
+RESPONSE`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where RESPONSE <>"null" ) OK
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=OK.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE correos_limpios
+SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+RID,
+RESPONSE,
+INTERFACEIP
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,RID,
+RESPONSE
+from ob_Src_ironport where RESPONSE <>"null" ) OK
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=OK.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID;`
+
+***

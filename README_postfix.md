@@ -60,6 +60,24 @@ FROM(SELECT MSGID,DAY(eventTimeStamp) as DIA,MONTH(eventTimeStamp) as MES,YEAR(e
 - **Id Es:**
 - **Query Hive:** `INSERT INTO TABLE correos_diaok SELECT CONCAT(ANO,"/",MES,"/",DIA) as ID,DIA,MES,ANO,SUM(TAMANO*cuenta) TAMANO_ok,sum(cuenta) as CUENTA_OK FROM(SELECT MSGID,DAY(eventTimeStamp) as DIA,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO,count(1) as cuenta FROM ob_src_postfix WHERE DSN in("2.0.0","2.6.0","2.4.0") and AMAVISID ='null' group by MSGID,DAY(eventTimeStamp) ,MONTH(eventTimeStamp),YEAR(eventTimeStamp)) correo JOIN
 (SELECT MSGID,SUM(SIZE) as TAMANO FROM ob_src_postfix WHERE QMGRID is not NULL and SIZE is not NULL GROUP BY MSGID)tam
-ON tam.MSGID=correo.MSGID GROUP BY DIA,MES,ANO;
-`
+ON tam.MSGID=correo.MSGID GROUP BY DIA,MES,ANO;`
 
+***
+
+####5. Métrica *top_emisores* : Correos enviados por emisor y mes
+
+- **Origen de datos:** `ob_src_postfix`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,USERFROM STRING,CUENTA BIGINT,TAMANO BIGINT,ULTIMO TIMESTAMP,MES BIGINT,ANO BIGINT`
+- **Query Select:** `SELECT CONCAT(ANO,MES,"-",USERFROM) as ID,USERFROM,count(CUENTA) as CUENTA,sum(TAMANO_enviados) as TAMANO,
+MAX(ULTIMO) as ULTIMO,MES,ANO FROM(SELECT MSGID,count(1) as CUENTA`
+- **Query From:** `FROM ob_src_postfix`
+- **Query Where:** `WHERE DSN in("2.0.0","2.6.0","2.4.0") and AMAVISID ='null' GROUP BY MSGID) DES JOIN(SELECT MSGID,
+USERFROM,sum(SIZE) as TAMANO_enviados,MAX(eventTimeStamp) as ULTIMO,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO 
+FROM ob_src_postfix WHERE SIZE is not NULL GROUP BY MSGID, USERFROM, MONTH(eventTimeStamp) ,YEAR(eventTimeStamp)) REM 
+ON REM.MSGID=DES.MSGID GROUP BY USERFROM, MES,ANO`
+- **Timestamp:**
+- **Id Es:**
+- **Query Hive:** `insert into table top_emisores SELECT CONCAT(ANO,MES,"-",USERFROM) as ID,USERFROM,count(CUENTA) as CUENTA,
+sum(TAMANO_enviados) as TAMANO,MAX(ULTIMO) as ULTIMO,MES,ANO FROM(SELECT MSGID,count(1) as CUENTA FROM ob_src_postfix WHERE DSN in("2.0.0","2.6.0","2.4.0") and AMAVISID ='null' GROUP BY MSGID) DES JOIN(SELECT MSGID,USERFROM,sum(SIZE) as TAMANO_enviados,
+MAX(eventTimeStamp) as ULTIMO,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO FROM ob_src_postfix WHERE SIZE is not NULL GROUP BY MSGID, USERFROM, MONTH(eventTimeStamp) ,YEAR(eventTimeStamp)) REM ON REM.MSGID=DES.MSGID GROUP BY USERFROM,MES,ANO;`

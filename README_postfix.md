@@ -1,6 +1,6 @@
 # Origen Postfix
 
-1. Métrica *primult_correo* : Primer y ultimo correo por cada mes
+####1. Métrica *primult_correo* : Primer y ultimo correo por cada mes
 
 - **Origen de datos:** `ob_src_postfix`
 - **Tipo:** `Batch`
@@ -15,7 +15,7 @@ YEAR(eventTimeStamp) as ANO,MAX(eventTimeStamp) as  ULTIMO,MIN(eventTimeStamp) a
 
 ***
 
-2. Métrica *correos_ok* : Correos Ok por mes
+####2. Métrica *correos_ok* : Correos Ok por mes
 
 - **Origen de datos:** `ob_src_postfix`
 - **Tipo:** `Batch`

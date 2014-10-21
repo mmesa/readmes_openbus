@@ -22,7 +22,7 @@ GROUP BY eventTimeStamp,usercode`
 - **Query Type:** `ID STRING,usuario_dominio STRING,userCode STRING,requestDomain STRING,eventTimeStamp timestamp,peticiones BIGINT`
 - **Query Select:** `SELECT CONCAT(eventTimeStamp,"-",requestDomain,"-",userCode) as ID,CONCAT(requestDomain,"-",usercode) as  usuario_dominio,userCode,requestDomain,eventTimeStamp,Count(1) as peticiones`
 - **Query From:** `FROM ob_src_bluecoat`
-- **Query Where:** `WHERE eventTimeStamp>"2014-07-26 22:00:00"AND eventTimeStamp <="2014-07-27 10:00:00" GROUP BY eventTimeStamp,usercode,requestDomain`
+- **Query Where:** `WHERE eventTimeStamp>"2014-07-26 22:00:00" AND eventTimeStamp <="2014-07-27 10:00:00" GROUP BY eventTimeStamp,usercode,requestDomain`
 - **Timestamp:**`eventtimestamp`
 - **Id Es:**
 - **Query Hive:** `INSERT INTO TABLE peticiones_dominio_usuario SELECT CONCAT(eventTimeStamp,"-",requestDomain,"-",userCode) as ID,CONCAT(requestDomain,"-",usercode) as usuario_dominio,userCode,requestDomain,eventTimeStamp,Count(1) as peticiones FROM ob_src_bluecoat GROUP BY eventTimeStamp,usercode,requestDomain;`
@@ -42,5 +42,37 @@ GROUP BY eventTimeStamp,usercode`
 - **Query Hive:** `INSERT INTO TABLE peticiones_usuario_maquina SELECT CONCAT(eventTimeStamp,"-",clientIP,"-",userCode) as ID,
 CONCAT(clientIP,"-",usercode) as usuario_maquina,userCode,clientIP,eventTimeStamp,Count(1) as peticiones FROM ob_src_bluecoat
 GROUP BY eventTimeStamp,usercode,clientIP;`
+
+***
+
+####4. Métrica *descarga_dominio* : Cantidad de descargas por dominio
+
+- **Origen de datos:** `ob_src_bluecoat`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,requestDomain STRING,eventTimeStamp timestamp,descargas BIGINT`
+- **Query Select:** `SELECT CONCAT(eventTimeStamp,"-",requestDomain) as ID,requestDomain,eventTimeStamp,Count(1) as descargas`
+- **Query From:** `FROM ob_src_bluecoat`
+- **Query Where:** `WHERE requestURIExtension not in ("html", "htm", "-", "php") AND eventtimestamp>"2014-07-25 10:00:00" AND eventtimestamp<="2014-07-25 22:00:00" GROUP BY eventTimeStamp,requestDomain`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE descarga_dominio SELECT CONCAT(eventTimeStamp,"-",requestDomain) as ID,requestDomain,
+eventTimeStamp,Count(1) as descargas FROM ob_src_bluecoat WHERE requestURIExtension not in ("html", "htm", "-", "php") GROUP BY eventTimeStamp,requestDomain;`
+
+***
+
+####5. Métrica *descarga_ejecutables_usuario* : Descargas de archivos ejecutables por usuario
+
+- **Origen de datos:** `ob_src_bluecoat`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,usuario_descarga STRING,userCode STRING,dominio STRING,recurso STRING,eventTimeStamp timestamp,
+descargas BIGINT,bytes BIGINT`
+- **Query Select:** `SELECT CONCAT(eventTimeStamp,"-",requestPath,"-",userCode) as ID,CONCAT(requestPath,"-",userCode) as usuario_descarga,userCode,requestDomain as dominio,requestPath as recurso,eventTimeStamp,Count(1) as descargas,SUM(scBytes) as bytes`
+- **Query From:** `FROM ob_src_bluecoat`
+- **Query Where:** `WHERE requestURIExtension in ("exe", "pl", "js") OR contentType in("application/x-msdos-program","application/x-javascript","application/javascript")GROUP BY eventTimeStamp,requestPath,userCode,requestDomain`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE descarga_ejecutables_usuario SELECT CONCAT(eventTimeStamp,"-",requestPath,"-",userCode) as ID,CONCAT(requestPath,"-",userCode) as usuario_descarga,userCode,requestDomain as dominio,requestPath as recurso,eventTimeStamp,
+Count(1) as descargas,SUM(scBytes) as bytes FROM ob_src_bluecoat WHERE requestURIExtension in ("exe", "pl", "js") OR
+contentType in ("application/x-msdos-program","application/x-javascript","application/javascript")GROUP BY eventTimeStamp,requestPath,userCode,requestDomain;`
 
 ***

@@ -15,4 +15,5 @@ Para crear nuevos orígenes es necesario realizar una serie de pasos previos:
 - [Scripts de metadata generados] (https://github.com/mmesa/readmes_openbus/blob/master/README_metadata_conf.md)
 - [Tablas Hive iniciales] (https://github.com/mmesa/readmes_openbus/blob/master/README_hive_conf.md)
 - [Parseador de topologías] (https://github.com/mmesa/readmes_openbus/blob/master/README_topologia_conf.md)
+- [Métricas y orígenes] (https://github.com/mmesa/readmes_openbus/blob/master/README_metricas.md)
 - [Compilar y desplegar la consola web](https://github.com/mmesa/readmes_openbus/blob/master/README_consola.md)

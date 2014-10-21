@@ -101,7 +101,7 @@ FROM ob_src_postfix WHERE SIZE is not NULL GROUP BY MSGID) REM ON REM.MSGID=DES.
 
 ***
 
-####2. Métrica *errores_smtp* : Correos con error por mes
+####7. Métrica *errores_smtp* : Correos con error por mes
 
 - **Origen de datos:** `ob_src_postfix`
 - **Tipo:** `Batch`

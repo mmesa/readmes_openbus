@@ -32,7 +32,7 @@ YEAR(eventTimeStamp) as ANO,MAX(eventTimeStamp) as  ULTIMO,MIN(eventTimeStamp) a
 
 ***
 
-3. Métrica *correos_notok* : Correos erróneos o devueltos
+####3. Métrica *correos_notok* : Correos erróneos o devueltos
 
 - **Origen de datos:** `ob_src_postfix`
 - **Tipo:** `Batch`
@@ -44,4 +44,22 @@ SELECT MSGID,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO,count(1) a
 - **Timestamp:**`eventtimestamp`
 - **Id Es:**
 - **Query Hive:** `INSERT INTO TABLE correos_notok SELECT CONCAT(ANO,MES) as ID,MES,ANO,SUM(TAMANO*cuenta) TAMANO_notok,sum(cuenta) as CUENTA_NOTOK FROM(SELECT MSGID,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO,count(1) as cuenta FROM ob_src_postfix WHERE DSN not in("2.0.0","2.6.0","2.4.0","null") and AMAVISID ='null' group by MSGID,MONTH(eventTimeStamp),YEAR(eventTimeStamp)) correo JOIN(SELECT MSGID,SUM(SIZE) as TAMANO FROM ob_src_postfix WHERE QMGRID is not NULL and SIZE is not NULL GROUP BY MSGID)tam ON tam.MSGID=correo.MSGID GROUP BY MES,ANO;`
+
+***
+
+####4. Métrica *correos_diaok* : Cantidad de correos OK por día
+
+- **Origen de datos:** `ob_src_postfix`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,DIA BIGINT,MES BIGINT,ANO BIGINT,TAMANO_ok BIGINT,CUENTA_OK BIGINT`
+- **Query Select:** `SELECT CONCAT(ANO,"/",MES,"/",DIA) as ID,DIA,MES,ANO,SUM(TAMANO*cuenta) TAMANO_ok,sum(cuenta) as CUENTA_OK
+FROM(SELECT MSGID,DAY(eventTimeStamp) as DIA,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO,count(1) as cuenta`
+- **Query From:** `FROM ob_src_postfix`
+- **Query Where:** `WHERE DSN in("2.0.0","2.6.0","2.4.0") and AMAVISID ='null' group by MSGID,DAY(eventTimeStamp) ,MONTH(eventTimeStamp),YEAR(eventTimeStamp)) correo JOIN(SELECT MSGID,SUM(SIZE) as TAMANO FROM POSTFIX_LOGS WHERE QMGRID is not NULL and SIZE is not NULL GROUP BY MSGID)tam ON tam.MSGID=correo.MSGID GROUP BY DIA,MES,ANO;`
+- **Timestamp:**
+- **Id Es:**
+- **Query Hive:** `INSERT INTO TABLE correos_diaok SELECT CONCAT(ANO,"/",MES,"/",DIA) as ID,DIA,MES,ANO,SUM(TAMANO*cuenta) TAMANO_ok,sum(cuenta) as CUENTA_OK FROM(SELECT MSGID,DAY(eventTimeStamp) as DIA,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO,count(1) as cuenta FROM ob_src_postfix WHERE DSN in("2.0.0","2.6.0","2.4.0") and AMAVISID ='null' group by MSGID,DAY(eventTimeStamp) ,MONTH(eventTimeStamp),YEAR(eventTimeStamp)) correo JOIN
+(SELECT MSGID,SUM(SIZE) as TAMANO FROM ob_src_postfix WHERE QMGRID is not NULL and SIZE is not NULL GROUP BY MSGID)tam
+ON tam.MSGID=correo.MSGID GROUP BY DIA,MES,ANO;
+`
 

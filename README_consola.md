@@ -1,15 +1,25 @@
 # Consola Web
 
-El proyecto web_console está subido al github en este [enlace](https://github.com/Produban/openbus/tree/web_console).  
-Para poder compilarlo y desplegarlo hay que descargarlo y utilizar un IDE como Eclipse.  
-Cuando esté descargado se podrá importar como proyecto maven desde eclipse en la ruta \openbus-web_console\web_console.  
-Con la opción maven install se generará el archivo web_console.war que podrá ser desplegado en el servidor de aplicaciones Tomcat
-que está instalado en 192.168.x.x/root/software/apache_tomcat_xxx.   
-En el directorio /root/software/apache_tomcat_xxx/webapps se copiará el archivo web_console.war generado, antes de eso habrá que
-realizar una serie de pasos previos para poder instalar el archivo de forma satisfactoria desde el servidor 192.168.x.x:
-* Buscar la referencia al servidor tomcat ´ps -ef |grep tomcat´
-* Parar el servidor tomcat con el pid referenciado anteriormente `kill -9 [PID]`
-* Borrar cualquier referencia a la aplicación web antigua con `rm -RF /root/software/apache_tomcat_xxx/webapps/web_console*`
-* Copiar el nuevo archivo .war generado al directorio destino `cp [dir_origen] /root/software/apache_tomcat_xxx/webapps`
-* Arrancar el servidor Tomcat `./root/software/apache_tomcat_xxx/bin/startup.sh`
-* La consola estará en http://192.168.xx:8080/web_console y se podrá hacer login con usuario admin y password admin.
+##Requerimientos mínimos para su utilización en un entorno local
+
+- Java 1.7
+- Apache Maven 3
+- Apache Tomcat 7
+- MySql 5.6
+ 
+Es conveniente que los directorios instalados de Java, Maven y MySql estés en el path del sistema.    
+La base de datos MySql debe estar precargada con una serie de scripts necesarios para poder utilizar la aplicación web.  
+El proyecto web_console está subido al github en este [enlace](https://github.com/Produban/openbus/tree/web_console).    
+Para poder compilarlo y desplegarlo hay que descargarlo y descomprimirlo en una carpeta.  
+Es recomendable utilizar un IDE como Eclipse para el desarrollo, compilación y generación del archivo .war. 
+Estos sería los pasos que habría que lanzar en orden:  
+
+###MySql (Desde línea de comandos)
+- `mysql -u root -p;`
+- `create database openbus;` (Sólo la primera vez)
+- Descargar el archivo [openbus.sql](https://github.com/Produban/openbus/blob/web_console/web_console/sql/openbus.sql) y cargar la base de datos con `mysql -u root -p openbus < openbus.sql`
+
+###Compilación y despliegue
+Si no se utiliza Eclipse  habría que situarse en el directorio descomprimido \openbus-web_console\web_console y lanzar las siguientes ordenes desde línea de comandos: `mvn clean install`  
+
+Esto generará el archivo web_console.war que podrá ser desplegado en el servidor de aplicaciones Tomcat en su carpeta webapps.

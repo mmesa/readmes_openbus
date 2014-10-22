@@ -23,5 +23,5 @@ Estos sería los pasos que habría que lanzar en orden:
 - Descomprimir el proyecto [web_console](https://github.com/Produban/openbus/tree/web_console) de github en una carpeta.
 - En la ruta \openbus-web_console\web_console\src\main\resources\META-INF\spring se encuentran los archivos **environment.properties** donde se pueden cambiar las constantes necesarias para la conexión con hive y elasticseach y **database.properties** donde se pueden cambiar las constantes necesarias para la conexión con MySql.
 - Si no se utiliza Eclipse  habría que situarse en el directorio descomprimido \openbus-web_console\web_console y lanzar las siguientes ordenes desde línea de comandos: `mvn clean install`. Esto generará el archivo *web_console.war* que podrá ser desplegado en el servidor de aplicaciones Tomcat, para ello copiar *web_console.war* en la carpeta webapps del directorio de instalación de Tomcat.
-- Para arrancar el servidor Tomcat lanzar desde la carpeta *bin* de su directorio de instalación el comando *startup.hs* o *startup.bat*
+- Para arrancar el servidor Tomcat lanzar desde la carpeta *bin* de su directorio de instalación el comando *startup.sh* o *startup.bat*
 

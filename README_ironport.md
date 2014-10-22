@@ -586,3 +586,107 @@ WHERE ICID is not NULL and INTERFACEIP <>"null"
 ON INTERF.ICID=REL.ICID;`
 
 ***
+
+9. Métrica *correos_limpios_georef* : Correos limpios
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+RID BIGINT,
+RESPONSE STRING,
+INTERFACEIP STRING,
+COORDS ARRAY<DOUBLE>,
+CITY STRING,
+COUNTRY STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+RID,
+RESPONSE,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,RID,
+RESPONSE,
+COORDS,
+CITY,
+COUNTRY`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where RESPONSE <>"null" and eventtimestamp>"2014-09-28 00:00:00") OK
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=OK.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID
+`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:*`ID`*
+- **Query final:** `INSERT OVERWRITE TABLE correos_limpios_georef SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+RID,
+RESPONSE,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,RID,
+RESPONSE,
+COORDS,
+CITY,
+COUNTRY FROM ob_src_ironport where RESPONSE <>"null" and eventtimestamp>"2014-09-28 00:00:00") OK
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=OK.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID
+D
+JOIN
+(
+SELECT
+MSGID as AMAVISID,
+CONCAT(TOSERVERNAME,'[',TOSERVERIP,']') as SERVDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID;`
+
+***

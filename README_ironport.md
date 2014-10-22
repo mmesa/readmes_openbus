@@ -966,3 +966,361 @@ WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0
 ON ENV.AMAVISID=REC.AMAVISID;`
 
 ***
+
+####13. Métrica *filtro_reputacion_georef* : Correos rechazados por Filtro de Reputación georeferenciados
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+REPUTATION STRING,
+INTERFACEIP STRING,
+COORDS ARRAY<DOUBLE>,
+CITY STRING,
+COUNTRY STRING`
+- **Query Select:** `SELECT
+DATOS.ICID as ID,
+eventTimeStamp,
+DATOS.ICID,
+REPUTATION,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM 
+(
+SELECT 
+REPUTATION,
+eventTimeStamp,
+ICID,COORDS,
+CITY,
+COUNTRY`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `WHERE (REPUTATION like "%TCPREFUSE%" OR REPUTATION like "%REJECTED%") and eventtimestamp>"2014-09-28 00:00:00") DATOS
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null" 
+) INTERF
+ON INTERF.ICID=DATOS.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**`ID`
+- **Query Hive:** `INSERT OVERWRITE TABLE filtro_reputacion_georef SELECT
+DATOS.ICID as ID,
+eventTimeStamp,
+DATOS.ICID,
+REPUTATION,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM 
+(
+SELECT 
+REPUTATION,
+eventTimeStamp,
+ICID,COORDS,
+CITY,
+COUNTRY FROM ob_src_ironport WHERE (REPUTATION like "%TCPREFUSE%" OR REPUTATION like "%REJECTED%") and eventtimestamp>"2014-09-28 00:00:00") DATOS
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null" 
+) INTERF
+ON INTERF.ICID=DATOS.ICIDRFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICIDTERF
+ON INTERF.ICID=REL.ICIDMSGID as AMAVISID,
+CONCAT(TOSERVERNAME,'[',TOSERVERIP,']') as SERVDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID;`
+
+***
+
+####14. Métrica *spam_georef* : Correos detectados como Spam georeferenciados
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+SPAMCASE STRING,
+INTERFACEIP STRING,
+COORDS ARRAY<DOUBLE>,
+CITY STRING,
+COUNTRY STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+SPAMCASE,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,"POSITIVE" as SPAMCASE,
+COORDS,
+CITY,
+COUNTRY
+`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where SPAMCASE <> "null" and eventtimestamp>"2014-09-28 00:00:00") SPAM
+JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=SPAM.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**`ID`
+- **Query Hive:** `INSERT OVERWRITE TABLE spam_georef 
+SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+SPAMCASE,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,"POSITIVE" as SPAMCASE,
+COORDS,
+CITY,
+COUNTRY
+ FROM ob_src_ironport where SPAMCASE <> "null" and eventtimestamp>"2014-09-28 00:00:00") SPAM
+JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=SPAM.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICIDTERF.ICID=REL.ICIDMSGID as AMAVISID,
+CONCAT(TOSERVERNAME,'[',TOSERVERIP,']') as SERVDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID;`
+
+***
+
+####15. Métrica *receptor_no_valido_georef* : Correos descartados por Receptor no válido georeferenciados
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+DSNBOUNCE STRING,
+BOUNCEDESC STRING,
+INTERFACEIP STRING,
+COORDS ARRAY<DOUBLE>,
+CITY STRING,
+COUNTRY STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+DSNBOUNCE,
+BOUNCEDESC,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+DSNBOUNCE,
+BOUNCEDESC,COORDS,
+CITY,
+COUNTRY 
+`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where BOUNCEDESC like "%nvalid recipient%" AND DSNBOUNCE ="5.1.0" and eventtimestamp>"2014-09-28 00:00:00") BOUNCE
+ LEFT JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=BOUNCE.MID
+LEFT JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID
+`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**`ID`
+- **Query Hive:** `INSERT OVERWRITE TABLE receptor_no_valido_georef 
+SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+DSNBOUNCE,
+BOUNCEDESC,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+DSNBOUNCE,
+BOUNCEDESC,COORDS,
+CITY,
+COUNTRY  FROM ob_src_ironport where BOUNCEDESC like "%nvalid recipient%" AND DSNBOUNCE ="5.1.0" and eventtimestamp>"2014-09-28 00:00:00") BOUNCE
+ LEFT JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=BOUNCE.MID
+LEFT JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID
+VDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID;`
+
+***
+
+####16. Métrica *total_mensajes_georef* : Total de mensajes de ironport georeferenciados
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+INTERFACEIP STRING,
+COORDS ARRAY<DOUBLE>,
+CITY STRING,
+COUNTRY STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",MID) as ID,
+eventTimeStamp,
+REL.ICID,
+MID,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM(
+select ICID,MID`
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `WHERE ICID is not NULL AND mid is not NULL AND RID is NULL and mailfrom ="null"
+GROUP BY ICID,MID) REL
+LEFT JOIN
+(
+SELECT 
+ICID
+,eventTimeStamp,INTERFACEIP,COORDS,
+CITY,
+COUNTRY
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null" and eventtimestamp>"2014-09-28 00:00:00"
+)ENTR
+ON ENTR.ICID=REL.ICID
+GROUP BY eventTimeStamp,MID,REL.ICID,INTERFACEIP,COORDS,
+CITY,
+COUNTRY
+`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**`ID`
+- **Query Hive:** `INSERT OVERWRITE TABLE total_mensajes_georef SELECT
+CONCAT(REL.ICID,"-",MID) as ID,
+eventTimeStamp,
+REL.ICID,
+MID,
+INTERFACEIP,
+COORDS,
+CITY,
+COUNTRY
+FROM(
+select ICID,MID  FROM ob_src_ironport WHERE ICID is not NULL AND mid is not NULL AND RID is NULL and mailfrom ="null"
+GROUP BY ICID,MID) REL
+LEFT JOIN
+(
+SELECT 
+ICID
+,eventTimeStamp,INTERFACEIP,COORDS,
+CITY,
+COUNTRY
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null" and eventtimestamp>"2014-09-28 00:00:00"
+)ENTR
+ON ENTR.ICID=REL.ICID
+GROUP BY eventTimeStamp,MID,REL.ICID,INTERFACEIP,COORDS,
+CITY,
+COUNTRYD,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID
+VDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID;`

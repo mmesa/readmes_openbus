@@ -115,3 +115,100 @@ YEAR(eventTimeStamp) as ANO`
 - **Query Hive:** `INSERT INTO TABLE errores_SMTP SELECT CONCAT(ERR.ANO,ERR.MES,"-",ERR.DSN) as ID,ERR.DSN,sum(correos) as correos,(sum(correos)*100)/total as porcentaje,sum(TAMANO) as TAMANO,ERR.MES,ERR.ANO FROM(SELECT MSGID,DSN,count(1) as correos,
 MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO FROM ob_src_postfix WHERE DSN not in ("2.0.0","2.6.0","2.4.0","null")GROUP BY MSGID,DSN, MONTH(eventTimeStamp), YEAR(eventTimeStamp)) ERR JOIN(SELECT MSGID,sum(SIZE) as TAMANO FROM ob_src_postfix WHERE SIZE is not NULL GROUP BY MSGID)TAM ON TAM.MSGID=ERR.MSGID JOIN(SELECT count(1) as total,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO FROM ob_src_postfix WHERE DSN not in("2.0.0","2.6.0","2.4.0","null")GROUP BY MONTH(eventTimeStamp) ,YEAR(eventTimeStamp))TOT ON TOT.ANO=ERR.ANO AND TOT.MES=ERR.MES GROUP BY ERR.DSN,ERR.MES,ERR.ANO,TOTAL;`
 
+***
+
+####8. Métrica ** : Envío entre servidores georeferenciado
+
+- **Origen de datos:** `ob_src_postfix`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+MSGID STRING,
+AMAVISID STRING,
+SERVORIGEN STRING,
+SERVDESTINO STRING,
+coords ARRAY<Double>,
+city STRING,
+country STRING,
+eventTimeStamp timestamp
+`
+- **Query Select:** `SELECT
+CONCAT(eventTimeStamp,'-',EMI.MSGID) as ID,
+EMI.MSGID,
+REc.AMAVISID,
+SERVORIGEN,
+SERVDESTINO,
+coords,
+city,
+country,
+eventTimeStamp
+FROM
+(SELECT
+MSGID,
+CONCAT(CLIENTE,'[',CLIENTEIP,']') as SERVORIGEN,
+coords,
+city,
+country,
+eventTimeStamp`
+- **Query From:** `FROM ob_src_postfix`
+- **Query Where:** `WHERE SMTPDID is not null and MSGID!= 'null' and CLIENTEIP!='null' and eventtimestamp>"2014-09-27 00:00:00") EMI
+JOIN
+(
+SELECT
+MSGID,
+AMAVISID
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID != 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+GROUP BY MSGID, AMAVISID
+) ENV
+ON ENV.MSGID=EMI.MSGID
+JOIN
+(
+SELECT
+MSGID as AMAVISID,
+CONCAT(TOSERVERNAME,'[',TOSERVERIP,']') as SERVDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**`ID`
+- **Query Hive:** `INSERT OVERWRITE TABLE envio_entre_servidores_georef SELECT
+CONCAT(eventTimeStamp,'-',EMI.MSGID) as ID,
+EMI.MSGID,
+REc.AMAVISID,
+SERVORIGEN,
+SERVDESTINO,
+coords,
+city,
+country,
+eventTimeStamp
+FROM
+(SELECT
+MSGID,
+CONCAT(CLIENTE,'[',CLIENTEIP,']') as SERVORIGEN,
+coords,
+city,
+country,
+eventTimeStamp FROM ob_src_postfix WHERE SMTPDID is not null and MSGID!= 'null' and CLIENTEIP!='null' and eventtimestamp>"2014-09-27 00:00:00") EMI
+JOIN
+(
+SELECT
+MSGID,
+AMAVISID
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID != 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+GROUP BY MSGID, AMAVISID
+) ENV
+ON ENV.MSGID=EMI.MSGID
+JOIN
+(
+SELECT
+MSGID as AMAVISID,
+CONCAT(TOSERVERNAME,'[',TOSERVERIP,']') as SERVDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID`
+
+***
+

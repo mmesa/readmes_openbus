@@ -783,3 +783,186 @@ WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0
 ON ENV.AMAVISID=REC.AMAVISID;`
 
 ***
+
+####11. Métrica *content_filter_georef* : Correos bloqueados por filtro de contenido georeferenciados
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+FILTROCONTENIDO STRING,
+INTERFACEIP STRING,
+COORDS ARRAY<DOUBLE>,
+CITY STRING,
+COUNTRY STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+FILTROCONTENIDO,
+INTERFACEIP,COORDS,
+CITY,
+COUNTRY 
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+FILTROCONTENIDO,COORDS,
+CITY,
+COUNTRY `
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where FILTROCONTENIDO<>"null" and eventtimestamp>"2014-09-28 00:00:00" ) FILTR
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=FILTR.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**`ID`
+- **Query Hive:** `INSERT OVERWRITE TABLE content_filter_georef SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+FILTROCONTENIDO,
+INTERFACEIP,COORDS,
+CITY,
+COUNTRY 
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+FILTROCONTENIDO,COORDS,
+CITY,
+COUNTRY  FROM ob_src_ironport where FILTROCONTENIDO<>"null" and eventtimestamp>"2014-09-28 00:00:00" ) FILTR
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=FILTR.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICIDMSGID as AMAVISID,
+CONCAT(TOSERVERNAME,'[',TOSERVERIP,']') as SERVDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID;`
+
+***
+
+####12. Métrica *virus_georef* : Correos detectados con virus georeferenciados
+
+- **Origen de datos:** `ob_src_ironport`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+eventTimeStamp timestamp,
+ICID BIGINT,
+MID BIGINT,
+ANTIVIRUS STRING,
+INTERFACEIP STRING,
+COORDS ARRAY<DOUBLE>,
+CITY STRING,
+COUNTRY STRING`
+- **Query Select:** `SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+ANTIVIRUS,
+INTERFACEIP,COORDS,
+CITY,
+COUNTRY 
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+ANTIVIRUS,COORDS,
+CITY,
+COUNTRY `
+- **Query From:** `FROM ob_src_ironport`
+- **Query Where:** `where ANTIVIRUS<>"null" and eventtimestamp>"2014-09-28 00:00:00") VIRUS
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=VIRUS.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**`ID`
+- **Query Hive:** `INSERT OVERWRITE TABLE virus_georef SELECT
+CONCAT(REL.ICID,"-",REL.MID) as ID,
+eventTimeStamp,
+REL.ICID,
+REL.MID,
+ANTIVIRUS,
+INTERFACEIP,COORDS,
+CITY,
+COUNTRY 
+FROM
+(
+SELECT
+eventTimeStamp,
+MID,
+ANTIVIRUS,COORDS,
+CITY,
+COUNTRY  FROM ob_src_ironport where ANTIVIRUS<>"null" and eventtimestamp>"2014-09-28 00:00:00") VIRUS
+ JOIN
+(
+select ICID,MID 
+from ob_src_ironport 
+WHERE ICID is not NULL AND mid is not NULL AND RID is NULL
+GROUP BY ICID,MID) REL
+ON REL.MID=VIRUS.MID
+JOIN
+(
+SELECT 
+ICID,
+INTERFACEIP
+from ob_src_ironport 
+WHERE ICID is not NULL and INTERFACEIP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICIDTERF
+ON INTERF.ICID=REL.ICIDMSGID as AMAVISID,
+CONCAT(TOSERVERNAME,'[',TOSERVERIP,']') as SERVDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID;`
+
+***

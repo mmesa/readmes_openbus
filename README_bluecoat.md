@@ -106,3 +106,70 @@ descargas BIGINT,bytes BIGINT`
 - **Query Hive:** `INSERT INTO TABLE descarga_video_usuario SELECT CONCAT(eventTimeStamp,"-",requestPath,"-",userCode) as ID,
 CONCAT(requestPath,"-",userCode) as usuario_descarga,userCode,requestDomain as dominio,requestPath as recurso,eventTimeStamp,
 Count(1) as descargas,SUM(scBytes) as bytes FROM ob_src_bluecoat WHERE requestURIExtension in ("flv", "mpeg", "avi", "f4m", "bootstrap", "mp4")  OR contentType in("video/mp4","video/f4f","video/x-flv","video/f4m","video/abst","video/webm","video/x-ms-asf") GROUP BY eventTimeStamp,requestPath,userCode,requestDomain;`
+
+***
+
+####8. Métrica *peticiones_user_agent_result_geo* : Peticiones por usuario, navegador, resultado y geolocalización
+
+- **Origen de datos:** `ob_src_bluecoat`
+- **Tipo:** `Batch`
+- **Query Type:** `ID STRING,
+userCode STRING,
+filterResult STRING,
+userAgent String,
+dominio STRING,
+recurso STRING,
+requestURIExtension STRING,
+eventTimeStamp timestamp,
+hora STRING,
+peticiones BIGINT,
+coords ARRAY<DOUBLE>,
+city STRING,
+country STRING
+`
+- **Query Select:** `SELECT
+CONCAT(eventTimeStamp,"-",userCode,"-",requestDomain,"-",requestPath) as ID,
+userCode,
+filterResult,
+userAgent,
+requestDomain as dominio,
+requestPath as recurso,
+requestURIExtension,
+eventTimeStamp,
+CONCAT(HOUR(eventTimeStamp),":",MINUTE(eventtimestamp)) as hora,
+Count(1) as peticiones,
+coords,
+city,
+country`
+- **Query From:** `FROM ob_src_bluecoat`
+- **Query Where:** `WHERE eventTimestamp>"2014-09-29 07:00:00" and  eventTimestamp<="2014-09-29 15:00:00" and filterResult in ("OBSERVED","DENIED","PROXIED")
+GROUP BY eventTimeStamp,usercode,filterResult,userAgent,requestDomain,requestPath,requestURIExtension,coords,
+city,
+country`
+- **Timestamp:**`eventtimestamp`
+- **Id Es:**
+- **Query Hive:** `INSERT OVERWRITE TABLE peticiones_user_agent_result_geo SELECT
+CONCAT(eventTimeStamp,"-",userCode,"-",requestDomain,"-",requestPath) as ID,
+userCode,
+filterResult,
+userAgent,
+requestDomain as dominio,
+requestPath as recurso,
+requestURIExtension,
+eventTimeStamp,
+CONCAT(HOUR(eventTimeStamp),":",MINUTE(eventtimestamp)) as hora,
+Count(1) as peticiones,
+coords,
+city,
+country FROM ob_src_bluecoat WHERE eventTimestamp>"2014-09-29 07:00:00" and  eventTimestamp<="2014-09-29 15:00:00" and filterResult in ("OBSERVED","DENIED","PROXIED")
+GROUP BY eventTimeStamp,usercode,filterResult,userAgent,requestDomain,requestPath,requestURIExtension,coords,
+city,
+countryP <>"null"
+) INTERF
+ON INTERF.ICID=REL.ICID
+VDESTINO
+FROM ob_src_postfix
+WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
+) REC
+ON ENV.AMAVISID=REC.AMAVISID;`
+

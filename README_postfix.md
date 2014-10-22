@@ -117,7 +117,7 @@ MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as ANO FROM ob_src_postfix WHE
 
 ***
 
-####8. Métrica ** : Envío entre servidores georeferenciado
+####8. Métrica *envio_entre_servidores_georef* : Envío entre servidores georeferenciado
 
 - **Origen de datos:** `ob_src_postfix`
 - **Tipo:** `Batch`
@@ -208,7 +208,5 @@ CONCAT(TOSERVERNAME,'[',TOSERVERIP,']') as SERVDESTINO
 FROM ob_src_postfix
 WHERE SMTPID is not null and AMAVISID = 'null' and DSN in("2.0.0","2.6.0","2.4.0")
 ) REC
-ON ENV.AMAVISID=REC.AMAVISID`
-
-***
+ON ENV.AMAVISID=REC.AMAVISID;`
 

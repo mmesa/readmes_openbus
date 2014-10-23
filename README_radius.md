@@ -35,7 +35,7 @@ on radius.Calling_Station_ID == hosts.mac and hosts.ID<radius.TIMESTAMP_MILLIS`
 		5. Query into: `delete hosts for current-events`
 		6. Query as: `select radius.TIMESTAMP_MILLIS as ID,radius.User_Name as maquina, radius.Calling_Station_ID as mac, count(1) as cuenta 
 `
-		7. Query group by: ``
+		7. Query group by:
 
 	3. Query3: Peticiones de usuarios por la interfaz 802.1x.
 
@@ -48,7 +48,7 @@ on radius.Calling_Station_ID == hosts.mac and hosts.ID<radius.TIMESTAMP_MILLIS`
 `
 		6. Query as: `select ACS_Timestamp as timestamp, TIMESTAMP_MILLIS as ID,User_Name as usuario, Calling_Station_ID as mac, Authentication_Status as status, Failure_Reason as motivo
 `
-		7. Query group by: ``
+		7. Query group by:
 
 	4. Query4: Se obtiene el nombre de la máquina para los usuarios de Query4 cruzando por MAC
 		1. Nombre: `Query4`
@@ -62,7 +62,7 @@ on hosts.mac==peticionesUsuario.mac`
 `
 		6. Query as: `select timestamp as timestamp, hosts.ID as idHost, peticionesUsuario.ID as ID , usuario as usuario, maquina as maquina, peticionesUsuario.mac as mac, status as status, motivo as motivo
 `
-		7. Query group by: ``
+		7. Query group by:
 
 	5. Query5: Como no hay left join, se obtiene la parte de Q3 que no cruza con la tabla, es decir, las personas para las cuales su MAC no hemos podido asignar nombre de host. La salida va al mismo Stream que Query4.
 		1. Nombre: `Query5`
@@ -74,7 +74,7 @@ on hosts.mac==peticionesUsuario.mac`
 `
 		6. Query as: `select timestamp as timestamp,0L as idHost, ID as ID, usuario as usuario, "not defined" as maquina, mac as mac, status as status, motivo as motivo
 `
-		7. Query group by: ``
+		7. Query group by:
 
 	6. Query6: Se calcula el número de error consecutivo para cada usuario. La función es un count que se reinicia a 0 si la petición de acceso es OK
 		1. Nombre: `Query6`
@@ -98,5 +98,5 @@ on hosts.mac==peticionesUsuario.mac`
 `
 		6. Query as: `select timestamp as timestamp,idHost as idHost, ID as ID, usuario as usuario, maquina as maquina, mac as mac, status as status, motivo as motivo, errorsConsecutivos as errorsConsecutivos
 `
-		7. Query group by: ``
+		7. Query group by:
 		

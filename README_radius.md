@@ -1,14 +1,75 @@
-# Origen Radius
+## Origen Radius
 
-####1. Métrica *peticiones_usuario* : Peticiones proxy por usuario
+####1. Métrica *Radius* 
 
-- **Origen de datos:** `ob_src_bluecoat`
-- **Tipo:** `Batch`
-- **Query Type:** `ID STRING,userCode STRING,eventTimeStamp timestamp,peticiones BIGINT`
-- **Query Select:** `SELECT CONCAT(eventTimeStamp,"-",userCode) as ID,userCode,eventTimeStamp,Count(1) as peticiones`
-- **Query From:** `FROM ob_src_bluecoat`
-- **Query Where:** `WHERE eventTimeStamp>"2014-07-29 10:00:00" and eventTimeStamp<="2014-07-30 10:00:00"
-GROUP BY eventTimeStamp,usercode`
-- **Timestamp:**`eventtimestamp`
-- **Id Es:**
-- **Query Hive:** `INSERT INTO TABLE peticiones_usuario SELECT CONCAT(eventTimeStamp,"-",userCode) as ID,userCode,eventTimeStamp,Count(1) as peticiones FROM ob_src_bluecoat GROUP BY eventTimeStamp,usercode;`
+- **Origen de datos:** `ob_src_radius`
+- **Tipo:** `Online`
+- **Stream:** 
+	1. Nombre: 
+	2. Campos:
+- **Tabla:** 
+	1. Nombre: 
+	2. Campos:	
+- **Queries:** 
+	1. Query1
+		1. Nombre:``
+		2. Callback:``
+		3. Orden:``
+		4. Query from:``
+		5. Query into:``
+		6. Query as:``
+		7. Query group by:``
+
+	2. Query1
+		1. Nombre:``
+		2. Callback:``
+		3. Orden:``
+		4. Query from:``
+		5. Query into:``
+		6. Query as:``
+		7. Query group by:``
+
+	3. Query1
+		1. Nombre:``
+		2. Callback:``
+		3. Orden:``
+		4. Query from:``
+		5. Query into:``
+		6. Query as:``
+		7. Query group by:``
+
+	4. Query1
+		1. Nombre:``
+		2. Callback:``
+		3. Orden:``
+		4. Query from:``
+		5. Query into:``
+		6. Query as:``
+		7. Query group by:``
+
+	5. Query1
+		1. Nombre:``
+		2. Callback:``
+		3. Orden:``
+		4. Query from:``
+		5. Query into:``
+		6. Query as:``
+		7. Query group by:``
+
+	6. Query1
+		1. Nombre:``
+		2. Callback:``
+		3. Orden:``
+		4. Query from:``
+		5. Query into:``
+		6. Query as:``
+		7. Query group by:``
+
+	7. Query1
+		1. Nombre:``
+		2. Callback:``
+		3. Orden:``
+		4. Query from:``
+		5. Query into:``
+		6. Query as:``
+		7. Query group by:``

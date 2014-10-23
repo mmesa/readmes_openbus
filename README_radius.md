@@ -50,7 +50,7 @@ on radius.Calling_Station_ID == hosts.mac and hosts.ID<radius.TIMESTAMP_MILLIS`
 `
 		7. Query group by: ``
 
-	4. Query4: Se obtiene el nombre de la máquina para los usuarios de Q3 cruzando por MAC
+	4. Query4: Se obtiene el nombre de la máquina para los usuarios de Query4 cruzando por MAC
 		1. Nombre: `Query4`
 		2. Callback: `Sí`
 		3. Orden: `4`
@@ -64,7 +64,7 @@ on hosts.mac==peticionesUsuario.mac`
 `
 		7. Query group by: ``
 
-	5. Query5: Como no hay left join, se obtiene la parte de Q3 que no cruza con la tabla, es decir, las personas para las cuales su MAC no hemos podido asignar nombre de host. La salida va al mismo Stream que Q4.
+	5. Query5: Como no hay left join, se obtiene la parte de Q3 que no cruza con la tabla, es decir, las personas para las cuales su MAC no hemos podido asignar nombre de host. La salida va al mismo Stream que Query4.
 		1. Nombre: `Query5`
 		2. Callback: `Sí`
 		3. Orden: `5`

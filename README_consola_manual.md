@@ -1,73 +1,21 @@
 ![Image](images/000009.png)
 
- 
-
-+--------------------------------------------------------------------------+
-|                                                                          |
-|                                                                          |
-|                                                                          |
-+--------------------------------------------------------------------------+
-|                                                                          |
-|                                                                          |
-| Manual de usuario                                                        |
-|                                                                          |
-| web\_console                                                             |
-+--------------------------------------------------------------------------+
-| Proyecto: Análisis de logs Big Data                                      |
-+--------------------------------------------------------------------------+
-| PLATAFORMA DE ANÁLISIS Y EXPLOTACIÓN DE LOGS.                            |
-+--------------------------------------------------------------------------+
-| La Finca - Planta 2<span class="calibre4"> </span>24/09/2014             |
-+--------------------------------------------------------------------------+
-
- 
+# Consola Web - Manual de usuario                                                        |
+## Proyecto: Análisis de logs Big Data                                  
+## PLATAFORMA DE ANÁLISIS Y EXPLOTACIÓN DE LOGS.                            
+## La Finca - Planta 2
 
 Índice
 
- 
+1. Introducción
+2. Autenticación
+3. Menú principal
+4. Crear métrica batch
+5. Consultar métrica batch
+6. Crear métrica online
+7. Consultar métrica online
 
-[<span class="text_">1.</span><span class="text_1"><span
-class="tab">      </span></span><span
-class="text_">Introducción</span>](#calibre_link-1)
-
-[<span class="text_">2.</span><span class="text_1"><span
-class="tab">      </span></span><span
-class="text_">Autenticación</span>](#calibre_link-2)
-
-[<span class="text_">3.</span><span class="text_1"><span
-class="tab">      </span></span><span class="text_">Menú
-principal</span>](#calibre_link-3)
-
-[<span class="text_">4.</span><span class="text_1"><span
-class="tab">      </span></span><span class="text_">Crear métrica
-batch</span>](#calibre_link-4)
-
-[<span class="text_">5.</span><span class="text_1"><span
-class="tab">      </span></span><span class="text_">Consultar métrica
-batch</span>](#calibre_link-5)
-
-[<span class="text_">6.</span><span class="text_1"><span
-class="tab">      </span></span><span class="text_">Crear métrica
-online</span>](#calibre_link-6)
-
-[<span class="text_">7.</span><span class="text_1"><span
-class="tab">      </span></span><span class="text_">Consultar métrica
-online</span>](#calibre_link-7)
-
- 
-
- 
-
- 
-
-1.  <div id="calibre_link-1">
-
-    </div>
-
-    <span class="text_2">Introducción</span>
-
- 
-
+# Introducción
 La consola web es una herramienta para poder gestionar las métricas
 tanto batch como online del sistema.
 

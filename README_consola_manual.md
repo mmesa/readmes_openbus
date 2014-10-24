@@ -50,11 +50,7 @@ pantalla donde aparecen las cuatro opciones de creación y consulta para
 las métricas batch y online. Y un panel superior donde se puede cambiar
 el idioma a inglés o español y cerrar la sesión del navegador.
 
- 
-
 ![Image](images/000013.png)
-
- 
 
 La opción de crear métrica batch permite
 crear la métrica batch en el sistema.
@@ -84,11 +80,7 @@ la métrica a crear.
 
 ![Image](images/000001.png)
 
- 
-
 ![Image](images/000005.png)
-
- 
 
 Un ejemplo de creación de métrica batch sería:
 
@@ -192,7 +184,6 @@ de la creación de la métrica.
 *Tablas Cep*
 
 ![Image](images/000006.png)
-
 *Queries Cep*
 
 ####Query 1

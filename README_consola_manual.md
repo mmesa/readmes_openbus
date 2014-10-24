@@ -70,8 +70,6 @@ La opción de consultar métrica online
 permite consultar todas las métricas online del sistema así como
 poder modificarlas o marcarlas para borrar.
 
- 
-
 # 4.Crear métrica batch
 
 Los campos marcados con asterisco indican que son obligatorios de
@@ -94,30 +92,30 @@ la métrica a crear.
 
 Un ejemplo de creación de métrica batch sería:
 
-Nombre de métrica: **primult\_correo**
+- Nombre de métrica: **primult\_correo**
 
-Descripción: **Primer y último correo por cada mes**
+- Descripción: **Primer y último correo por cada mes**
 
-Orígenes de datos: **ob\_src\_postfix** (Campo no editable cuando se
+- Orígenes de datos: **ob\_src\_postfix** (Campo no editable cuando se
 modifique o consulte la métrica)
 
-Campos: Son los campos del origen con los que se puede construir la
+- Campos: Son los campos del origen con los que se puede construir la
 métrica, tiene sólo carácter informativo.
 
-Tipo: **Batch**
+- Tipo: **Batch**
 
-Query Type: **ID STRING, MES INT, ANO INT, ULTIMO STRING, PRIMERO
+- Query Type: **ID STRING, MES INT, ANO INT, ULTIMO STRING, PRIMERO
 STRING**
 
-Query Select: **SELECT
+- Query Select: **SELECT
 CONCAT(YEAR(eventTimeStamp),MONTH(eventTimeStamp)) as
 ID,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as
 ANO,MAX(eventTimeStamp) as ULTIMO,MIN(eventTimeStamp) as PRIMERO**
 
-Query From: **FROM ob\_src\_postfix** (Campo no editable, se construye a
+- Query From: **FROM ob\_src\_postfix** (Campo no editable, se construye a
 través<span class="calibre11"> del campo Orígenes de datos)
 
-Query Where: **WHERE MSGID is not NULL and QMGRID is not NULL and
+- Query Where: **WHERE MSGID is not NULL and QMGRID is not NULL and
 USERFROM !='null' GROUP BY MONTH(eventTimeStamp),
 YEAR(eventTimeStamp).**
 
@@ -128,7 +126,6 @@ guardado se indicará con un texto descriptivo en la propia página de la
 creación de la métrica.
 
 # 5.Consultar métrica batch
-
 
 En la tabla aparecerán todas las métricas de tipo batch creadas por la
 consola. Se podrán modificar o borrar haciendo click en cualquiera de
@@ -162,11 +159,8 @@ Así mismo existirá un cuadro de búsqueda en la tabla que actuará en
 todos los textos de la misma, es decir, que cualquier texto que se
 indique en la caja afectará a todas las columnas de la tabla.
 
- 
-
 ![Image](images/000012.png)
 
- 
 # 6.Crear métrica online
 
 Los campos marcados con asterisco indican que son obligatorios de
@@ -189,108 +183,88 @@ página de consultar todas las métricas online. Si se produjera un error
 en el guardado se indicará con un texto descriptivo en la propia página
 de la creación de la métrica.
 
- 
-
 ![Image](images/000014.png)
-
- 
 
 ![Image](images/000004.png)
 
- 
-
 ![Image](images/000011.png)
 
- 
-
- 
-
-Tablas Cep
+*Tablas Cep*
 
 ![Image](images/000006.png)
 
- 
+*Queries Cep*
 
-Queries Cep
-
-Query 1
+####Query 1
 
 ![Image](images/000003.png)
 
-Query 3
+####Query 3
 
 ![Image](images/000007.png)
-
 
 Existen indicadores de ayuda en los campos para
 facilitar la sintaxis de las queries de la métrica a crear. 
 
 Un ejemplo de creación de métrica online sería:
 
-Nombre de métrica: **radius** (Campo no editable cuando se modifique o
+- Nombre de métrica: **radius** (Campo no editable cuando se modifique o
 consulte la métrica)
 
-Descripción: **radius desc**
+- Descripción: **radius desc**
 
-Orígenes de datos: **ob\_src\_radius** (Campo no editable cuando se
+- Orígenes de datos: **ob\_src\_radius** (Campo no editable cuando se
 modifique o consulte la métrica)
 
-Campos: Son los campos del origen con los que se puede construir la
+- Campos: Son los campos del origen con los que se puede construir la
 métrica, tiene sólo carácter informativo.
 
-Nombre del stream: **radius**
+- Nombre del stream: **radius**
 
-Campos del stream: **ACS\_Timestamp string,TIMESTAMP\_MILLIS
+- Campos del stream: **ACS\_Timestamp string,TIMESTAMP\_MILLIS
 long,Access\_Service string, User\_Name string,Calling\_Station\_ID
 string,Authentication\_Status string,Failure\_Reason<span
 class="calibre11"> string **
 
- 
+- *Table1*:
 
-Table1:
+- Nombre: **hosts**
 
-Nombre: **hosts**
+- Campos: **ID long, maquina string, mac string, cuenta long**
 
-Campos: **ID long, maquina string, mac string, cuenta long**
+- *Query1*:
 
- 
+- Nombre: **q1**
 
-Query1:
+- Query From: **from radius[(User\_Name contains 'host/')]**
 
-Nombre: **q1**
+- Query Into: **insert into hosts**
 
-Query From: **from radius[(User\_Name contains 'host/')]**
+- Query As: **select TIMESTAMP\_MILLIS as ID,User\_Name as maquina,
+Calling\_Station\_ID as mac, count(1) as cuenta**
 
-Query Into: **insert into hosts**
+-*Query3*:
 
-Query As: **select TIMESTAMP\_MILLIS as ID,User\_Name as maquina,
-Calling\_Station\_ID as mac, count(1) as cuenta<span class="calibre11">
-**
+- Nombre: **q3**
 
- 
-Query3:
-
-Nombre: **q3**
-
-Query From: **from radius[not(User\_Name contains 'host/') and
+- Query From: **from radius[not(User\_Name contains 'host/') and
 Access\_Service=='802.1x\_SanHQ']**
 
-Query Into: **insert into peticionesUsuario**
+- Query Into: **insert into peticionesUsuario**
 
-Query As: **select ACS\_Timestamp as timestamp, TIMESTAMP\_MILLIS as
+- Query As: **select ACS\_Timestamp as timestamp, TIMESTAMP\_MILLIS as
 ID,User\_Name as usuario, Calling\_Station\_ID as mac,
 Authentication\_Status as status, Failure\_Reason as motivo**
 
-Formato ES: **timestamp date, ID long,usuario string, mac string, status
+- Formato ES: **timestamp date, ID long,usuario string, mac string, status
 string,motivo string**
 
-TTL ES: **180s**
+- TTL ES: **180s**
 
-Type ES: **radius\_peticionesusuario** (Campo no editable, se construye
+- Type ES: **radius\_peticionesusuario** (Campo no editable, se construye
 con el <span class="calibre11">campo nombre de la métrica + parte
 del campo Query Into)
 
- 
 # 7.Consultar métrica online
 
 En la tabla aparecerán todas las métricas de tipo online creadas por la
@@ -311,6 +285,5 @@ Al igual que en la consulta de las métricas batch existirá un cuadro de
 búsqueda en la tabla que actuará en todos los textos de la misma, es
 decir, que cualquier texto que se indique en la caja afectará a todas
 las columnas de la tabla.
-
 
 ![Image](images/000002.png)

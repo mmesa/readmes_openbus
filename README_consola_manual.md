@@ -1,11 +1,9 @@
-![Image](images/000009.png)
-
 # Consola Web - Manual de usuario                                                        |
 ## Proyecto: Análisis de logs Big Data                                  
-## PLATAFORMA DE ANÁLISIS Y EXPLOTACIÓN DE LOGS.                            
-## La Finca - Planta 2
+### PLATAFORMA DE ANÁLISIS Y EXPLOTACIÓN DE LOGS.                            
+#### La Finca - Planta 2
 
-Índice
+# Índice
 
 1. Introducción
 2. Autenticación
@@ -15,7 +13,7 @@
 6. Crear métrica online
 7. Consultar métrica online
 
-# Introducción
+# 1.Introducción
 La consola web es una herramienta para poder gestionar las métricas
 tanto batch como online del sistema.
 
@@ -32,16 +30,8 @@ su definición y creación en la su base de datos relacional **MySql** y
 proporcionará una serie de servicios externos que servirán para poder
 gestionar las topologías **Storm** y posteriormente poder explotar los
 datos.
-
  
-
-1.  <div id="calibre_link-2">
-
-    </div>
-
-    <span class="text_2">Autenticación</span>
-
- 
+# 2.Autenticación
 
 La dirección para accede a la consola es
 <http://180.133.240.175:8080/web_console>
@@ -52,13 +42,7 @@ contraseña admin.
 
 ![Image](images/000008.png)
 
-1.  <div id="calibre_link-3">
-
-    </div>
-
-    <span class="text_2">Menú principal</span>
-
- 
+# 3.Menú principal
 
 Al realizar la autenticación con éxito se accederá al menú principal de
 la consola. En él se podrá observar un panel en el lado izquierdo de la
@@ -72,35 +56,23 @@ el idioma a inglés o español y cerrar la sesión del navegador.
 
  
 
-La opción de <span class="text_3">crear métrica batch </span>permite
+La opción de crear métrica batch permite
 crear la métrica batch en el sistema.
 
-La opción de <span class="text_3">consultar métrica batch </span>permite
+La opción de consultar métrica batch permite
 consultar todas las métricas batch del sistema así como poder
 modificarlas, relanzarlas o borrarlas.
 
-La opción de <span class="text_3">crear métrica online </span>permite
+La opción de crear métrica online permite
 crear la métrica online en el sistema.
 
-La opción de <span class="text_3">consultar métrica online
-</span>permite consultar todas las métricas online del sistema así como
+La opción de consultar métrica online
+permite consultar todas las métricas online del sistema así como
 poder modificarlas o marcarlas para borrar.
 
  
 
- 
-
- 
-
- 
-
-1.  <div id="calibre_link-4">
-
-    </div>
-
-    <span class="text_2">Crear métrica batch</span>
-
- 
+# 4.Crear métrica batch
 
 Los campos marcados con asterisco indican que son obligatorios de
 rellenar.
@@ -143,7 +115,7 @@ ID,MONTH(eventTimeStamp) as MES,YEAR(eventTimeStamp) as
 ANO,MAX(eventTimeStamp) as ULTIMO,MIN(eventTimeStamp) as PRIMERO**
 
 Query From: **FROM ob\_src\_postfix** (Campo no editable, se construye a
-través<span class="calibre11"> del campo </span>Orígenes de datos)
+través<span class="calibre11"> del campo Orígenes de datos)
 
 Query Where: **WHERE MSGID is not NULL and QMGRID is not NULL and
 USERFROM !='null' GROUP BY MONTH(eventTimeStamp),
@@ -155,15 +127,8 @@ consultar todas las métricas batch. Si se produjera un error en el
 guardado se indicará con un texto descriptivo en la propia página de la
 creación de la métrica.
 
- 
+# 5.Consultar métrica batch
 
-1.  <div id="calibre_link-5">
-
-    </div>
-
-    <span class="text_2">Consultar métrica batch</span>
-
- 
 
 En la tabla aparecerán todas las métricas de tipo batch creadas por la
 consola. Se podrán modificar o borrar haciendo click en cualquiera de
@@ -172,36 +137,17 @@ las filas de la tabla.
 Cada una de las métricas tendrá un campo estado que indicará el proceso
 en el que se encuentra la métrica. Los estados serán:
 
-<div class="calibre12">
-
-<div class="block_16">
-
-<span class="bullet_">- </span><span class="calibre13">*OK*, que
-indicará que la métrica se ha creado y lanzado con éxito. </span>
-
-</div>
-
-<div class="block_17">
-
-<span class="bullet_">- </span><span class="calibre13">*En ejecución*,
+*OK*, que
+indicará que la métrica se ha creado y lanzado con éxito. 
+*En ejecución*,
 que indicará que la métrica se ha creado y se está lanzando en ese
-momento.</span>
+momento.
 
-</div>
-
-<div class="block_18">
-
-<span class="bullet_">- </span><span class="calibre13">*Error*, que
+*Error*, que
 indicará que la métrica se ha creado con error o bien se ha creado con
 éxito pero se ha lanzado y el servidor ha devuelto un código de error.
 Si esto ocurriera la etiqueta de estado de error proporcionará un texto
-descriptivo del mismo al usuario mediante un tooltip.</span>
-
-</div>
-
-</div>
-
- 
+descriptivo del mismo al usuario mediante un tooltip.
 
 La tabla podrá ser refrescada con el botón de color verde para ver el
 estado en el que se encuentra la métrica.
@@ -221,14 +167,7 @@ indique en la caja afectará a todas las columnas de la tabla.
 ![Image](images/000012.png)
 
  
-
-1.  <div id="calibre_link-6">
-
-    </div>
-
-    <span class="text_2">Crear métrica online</span>
-
- 
+# 6.Crear métrica online
 
 Los campos marcados con asterisco indican que son obligatorios de
 rellenar.
@@ -272,60 +211,19 @@ Tablas Cep
 
  
 
- 
-
- 
-
- 
-
- 
-
 Queries Cep
-
- 
 
 Query 1
 
 ![Image](images/000003.png)
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 Query 3
 
 ![Image](images/000007.png)
 
- 
 
- 
-
- 
-
- 
-
- 
-
- 
-
-<span class="calibre11">Existen indicadores de ayuda en los campos para
-facilitar la sintaxis de las queries de la métrica a crear. </span>
+Existen indicadores de ayuda en los campos para
+facilitar la sintaxis de las queries de la métrica a crear. 
 
 Un ejemplo de creación de métrica online sería:
 
@@ -345,7 +243,7 @@ Nombre del stream: **radius**
 Campos del stream: **ACS\_Timestamp string,TIMESTAMP\_MILLIS
 long,Access\_Service string, User\_Name string,Calling\_Station\_ID
 string,Authentication\_Status string,Failure\_Reason<span
-class="calibre11"> string </span>**
+class="calibre11"> string **
 
  
 
@@ -367,10 +265,9 @@ Query Into: **insert into hosts**
 
 Query As: **select TIMESTAMP\_MILLIS as ID,User\_Name as maquina,
 Calling\_Station\_ID as mac, count(1) as cuenta<span class="calibre11">
-</span>**
+**
 
  
-
 Query3:
 
 Nombre: **q3**
@@ -390,22 +287,11 @@ string,motivo string**
 TTL ES: **180s**
 
 Type ES: **radius\_peticionesusuario** (Campo no editable, se construye
-con el <span class="calibre11">campo </span>nombre de la métrica + parte
+con el <span class="calibre11">campo nombre de la métrica + parte
 del campo Query Into)
 
  
-
- 
-
- 
-
-1.  <div id="calibre_link-7">
-
-    </div>
-
-    <span class="text_2">Consultar métrica online</span>
-
- 
+# 7.Consultar métrica online
 
 En la tabla aparecerán todas las métricas de tipo online creadas por la
 consola que no estén marcadas para borrar. Se podrán modificar, marcar
@@ -426,8 +312,5 @@ búsqueda en la tabla que actuará en todos los textos de la misma, es
 decir, que cualquier texto que se indique en la caja afectará a todas
 las columnas de la tabla.
 
- 
 
 ![Image](images/000002.png)
-
-</div>

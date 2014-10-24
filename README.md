@@ -7,7 +7,9 @@ Para crear nuevos orígenes es necesario realizar una serie de pasos previos:
 - [Generar la tabla Hive inicial con el nuevo origen](https://github.com/mmesa/readmes_openbus/blob/master/README_hive.md)
 - [Crear y desplegar la nueva topología para el nuevo origen](https://github.com/mmesa/readmes_openbus/blob/master/README_topologia.md)
 
+Para administrar métricas desde la consola web:
 
+- [Manual de uso de la consola web](https://github.com/mmesa/readmes_openbus/blob/master/README_consola_manual.md)
 
 #Referencias
 
@@ -16,4 +18,4 @@ Para crear nuevos orígenes es necesario realizar una serie de pasos previos:
 - [Tablas Hive iniciales] (https://github.com/mmesa/readmes_openbus/blob/master/README_hive_conf.md)
 - [Parseador de topologías] (https://github.com/mmesa/readmes_openbus/blob/master/README_topologia_conf.md)
 - [Orígenes y métricas] (https://github.com/mmesa/readmes_openbus/blob/master/README_metricas.md)
-- [Compilar y desplegar la consola web](https://github.com/mmesa/readmes_openbus/blob/master/README_consola.md)
+- [Compilar y desplegar la consola web](https://github.com/mmesa/readmes_openbus/blob/master/README_consola_despliegue.md)

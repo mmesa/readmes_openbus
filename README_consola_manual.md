@@ -226,13 +226,13 @@ long,Access\_Service string, User\_Name string,Calling\_Station\_ID
 string,Authentication\_Status string,Failure\_Reason<span
 class="calibre11"> string **
 
-- *Table1*:
+-*Table1*:
 
 - Nombre: **hosts**
 
 - Campos: **ID long, maquina string, mac string, cuenta long**
 
-- *Query1*:
+-*Query1*:
 
 - Nombre: **q1**
 

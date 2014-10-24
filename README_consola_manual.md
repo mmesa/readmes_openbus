@@ -1,7 +1,7 @@
   
 <div id="calibre_link-0" class="calibre">
 
-![Image](images/000009.png)
+![Image](000009.png)
 
  
 

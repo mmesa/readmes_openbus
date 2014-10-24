@@ -7,7 +7,7 @@
 - Apache Tomcat 7
 - MySql 5.6
  
-Es conveniente que los directorios instalados de Java, Maven y MySql estés en el path del sistema.    
+Es conveniente que los directorios instalados de Java, Maven y MySql estén definidos en el path del sistema.    
 La base de datos MySql debe estar precargada con una serie de scripts necesarios para poder utilizar la aplicación web.  
 El proyecto web_console está subido al github en este [enlace](https://github.com/Produban/openbus/tree/web_console).    
 Para poder compilarlo y desplegarlo hay que descargarlo y descomprimirlo en una carpeta.  

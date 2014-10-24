@@ -80,6 +80,7 @@ la métrica a crear.
 
 ![Image](images/000001.png)
 
+
 ![Image](images/000005.png)
 
 Un ejemplo de creación de métrica batch sería:
@@ -177,13 +178,17 @@ de la creación de la métrica.
 
 ![Image](images/000014.png)
 
+
 ![Image](images/000004.png)
 
+
 ![Image](images/000011.png)
+
 
 *Tablas Cep*
 
 ![Image](images/000006.png)
+
 *Queries Cep*
 
 ####Query 1
